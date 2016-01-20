@@ -1,0 +1,30 @@
+{
+  "name": "Orion",
+  "homepage": "https://github.com/nickroberts404/Orion",
+  "authors": [
+    "nickroberts404 <nickroberts404@gmail.com>"
+  ],
+  "description": "A simple way to learn about constellations.",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "stars",
+    "constellations",
+    "orion",
+    "viewer",
+    "simple"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.12",
+    "bootstrap": "~3.3.6",
+    "queue-async": "~1.0.7"
+  }
+}

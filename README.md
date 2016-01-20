@@ -1,2 +1,2 @@
 # Orion
-A simple constellation viewer.
+A simple way to learn about constellations.

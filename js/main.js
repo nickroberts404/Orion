@@ -45,15 +45,18 @@ function star_map(err, constellations, star_list){
 }
 function draw_constellation(c, star_catalog){
 
-	console.log('Constellation: ',c);
-
 	d3.select('#name')
 		.text(c.Name);
 
 	// Create dictionary of stars in constellation, with their id as key
-	c.ordered_stars = build_constellation_catalog(c.stars, star_catalog);
+	if(!c.ordered_stars){
+		c.ordered_stars = build_constellation_catalog(c.stars, star_catalog);
+	}
 	// Change the constellation lines to refrence stars instead of ids
-	c.lines = c.lines.map(function(d){return [ c.ordered_stars[d[0]], c.ordered_stars[d[1]] ] })
+	if( typeof c.lines[0][0] != 'object'){
+		c.lines = c.lines.map(function(d){ return [ c.ordered_stars[d[0]], c.ordered_stars[d[1]] ] })
+	}
+	
 
 	var distances = get_distances(c.stars);
 	var y_longest = distances.y_bound/height >= distances.x_bound/width;
@@ -77,7 +80,7 @@ function draw_constellation(c, star_catalog){
 
 	// Draw connections
 	var connections = g.selectAll('.connections')
-		.data(c.lines, function(d){ console.log(d); return d[0].bfID})
+		.data(c.lines, function(d){ return d[0].bfID + d[1].bfID })
 	connections.enter()
 		.append('path')
 		.attr('class', 'connections')
@@ -104,14 +107,12 @@ function draw_constellation(c, star_catalog){
 }
 
 function get_coordinates(star){
-	console.log('get_coordinates: ', star)
 	var a = (star.RAh/24)*ASCENSION_RATIO;
 	var d = ((star.DEd+90)/180)*DECLINATION_RATIO;
 	return [a, d];
 }
 
 function get_distances(stars){
-	console.log('get_distances: ',stars.length)
 	var x_extent = d3.extent(stars, function(d){ return get_coordinates(d)[0] });
 	var y_extent = d3.extent(stars, function(d){ return get_coordinates(d)[1] });
 	return {
@@ -145,5 +146,6 @@ function build_constellation_catalog(stars, star_catalog){
 		star_data.vmag = star_catalog[star_data.bfID].Vmag;
 		catalog[star_data.id] = star_data;
 	}
+	console.log('Catalog: ', catalog);
 	return catalog;
 }

@@ -143,6 +143,7 @@ function build_constellation_catalog(stars, star_catalog){
 	for(star in stars){
 		var star_data = stars[star];
 		star_data.bfID = star_data.bfID.replace(/ /g, '');
+		if(!star_catalog[star_data.bfID]) console.log('SUPERNOVA! ',star_data.bfID )
 		star_data.vmag = star_catalog[star_data.bfID].Vmag;
 		catalog[star_data.id] = star_data;
 	}

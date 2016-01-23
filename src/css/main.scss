@@ -1,3 +1,12 @@
+$color-primary: steelblue;
+$color-star-backing: white;
+@mixin large_text(){
+	font-size: 40px;
+	font-weight: 900;
+	opacity: 0.2;
+	fill: $color-primary;
+}
+
 svg{	
 	border: 1px solid #bbb;
 	/*border-radius: 50%;*/
@@ -7,7 +16,7 @@ svg{
 	transform: translate(-50%, -50%);
 }
 .stars{
-	fill: steelblue;
+	fill: $color-primary;
 	opacity: 0.6;
 }
 .connections{
@@ -16,20 +25,13 @@ svg{
 	opacity: 0.2;
 	stroke-width: 0.5;
 	stroke-linecap: round;
-	stroke-dash
 }
 .stars-backing{
-	fill: white;
+	fill: $color-star-backing;
 }
 #name{
-	font-size: 40px;
-	font-weight: 900;
-	opacity: 0.2;
-	fill: steelblue;
+	@include large_text();
 }
 #index{
-	font-size: 40px;
-	font-weight: 900;
-	opacity: 0.2;
-	fill: steelblue;
+	@include large_text();
 }

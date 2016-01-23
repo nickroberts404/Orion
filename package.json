@@ -4,7 +4,7 @@
   "description": "A simple way to learn about constellations.",
   "main": "index.js",
   "scripts": {
-    "build": "watchify js/main.js -o js/orion.js"
+    "serve": "live-server --ignore=src/"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,7 @@
     "gulp-sass": "^2.1.1",
     "gulp-uglify": "^1.5.1",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0"
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
     "async-queue": "^0.1.0",

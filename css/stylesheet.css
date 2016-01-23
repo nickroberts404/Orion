@@ -1,5 +1,5 @@
 svg{	
-	/*border: 1px solid #bbb;*/
+	border: 1px solid #bbb;
 	/*border-radius: 50%;*/
 	position: absolute;
 	top: 50%;
@@ -16,11 +16,18 @@ svg{
 	opacity: 0.2;
 	stroke-width: 0.5;
 	stroke-linecap: round;
+	stroke-dash
 }
 .stars-backing{
 	fill: white;
 }
 #name{
+	font-size: 40px;
+	font-weight: 900;
+	opacity: 0.2;
+	fill: steelblue;
+}
+#index{
 	font-size: 40px;
 	font-weight: 900;
 	opacity: 0.2;

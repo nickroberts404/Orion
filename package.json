@@ -1,0 +1,29 @@
+{
+  "name": "Orion",
+  "version": "1.0.0",
+  "description": "A simple way to learn about constellations.",
+  "main": "index.js",
+  "scripts": {
+    "build": "watchify js/main.js -o js/orion.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickroberts404/Orion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nickroberts404/Orion/issues"
+  },
+  "homepage": "https://github.com/nickroberts404/Orion#readme",
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "async-queue": "^0.1.0",
+    "d3": "^3.5.13",
+    "jquery": "^2.2.0"
+  }
+}

@@ -19434,7 +19434,7 @@ function draw_constellation(c){
 
 
 
-},{"./calculation.js":4,"./drawing.js":5,"./setup.js":6,"d3":1}],4:[function(require,module,exports){
+},{"./calculation.js":4,"./drawing.js":6,"./setup.js":7,"d3":1}],4:[function(require,module,exports){
 var d3 = require('d3');
 
 DECLINATION_RATIO = 5;
@@ -19471,10 +19471,54 @@ module.exports = {
 	}
 }
 },{"d3":1}],5:[function(require,module,exports){
+var d3 = require('d3');
+
+var target;
+var target_x;
+var target_y;
+
+module.exports = {
+	handle_star_click: function(d, i){
+		if(!target){
+			d3.event.stopPropagation()
+			target = d3.select('#star'+d.id);
+			console.log(target[0][0].id)
+			target_x = target[0][0].cx.baseVal.value;
+			target_y = target[0][0].cy.baseVal.value;
+			d3.select('#star-space').on('mousemove', visualize_line);
+			d3.select('body').on('click', cancel_connection);
+		} 
+	}
+}
+
+function visualize_line(){
+	d3.select('.connection-temp').remove();
+	draw_line(target_x, target_y, d3.event.offsetX, d3.event.offsetY);
+}
+
+function draw_line(x1, y1, x2, y2){
+	d3.select('#line-layer')
+		.append('line')
+		.attr('class', 'connection-temp')
+		.attr('x1', x1+50)
+		.attr('y1', y1+50)
+		.attr('x2', x2)
+		.attr('y2', y2)
+}
+
+function cancel_connection(){
+	d3.select('#star-space').on('mousemove', null);
+	d3.select('body').on('click', null);
+	d3.select('.connection-temp').remove();
+	target = null;
+
+}
+},{"d3":1}],6:[function(require,module,exports){
 // drawing.js
 
 var d3 = require('d3');
 var calc = require('./calculation.js');
+var connect = require('./connection.js');
 
 module.exports = {
 	name: function(name){
@@ -19504,10 +19548,10 @@ function draw_main_stars(s, scale){
 		.attr('r', function(d){ return scale.mag(d.mag)})
 		.attr('cx', function(d){ return scale.x(calc.coordinates(d)[0]) })
 		.attr('cy', function(d){ return scale.y(calc.coordinates(d)[1]) })
-		.on('click', function(d, i){
-			console.log(d);
-		})
+		.attr('id', function(d){ return 'star'+d.id })
+		.on('click', connect.handle_star_click);
 }
+
 function draw_star_backings(s, scale){
 	s.append('circle')
 		.attr('class', 'stars-backing')
@@ -19518,7 +19562,7 @@ function draw_star_backings(s, scale){
 			d3.select('#index').text(d.proper || d.bf)
 		})
 }
-},{"./calculation.js":4,"d3":1}],6:[function(require,module,exports){
+},{"./calculation.js":4,"./connection.js":5,"d3":1}],7:[function(require,module,exports){
 // setup.js
 
 var d3 = require('d3');
@@ -19533,7 +19577,11 @@ module.exports = {
 		var svg = d3.select('body').append('svg')
 			.attr('height', height + margin.top + margin.bottom)
 			.attr('width', width + margin.left + margin.right)
+			.attr('id', 'star-space');
+		svg.append('g')
+			.attr('id', 'line-layer');
 		var g = svg.append('g')
+			.attr('id', 'main-g')
 			.attr('transform', 'translate('+margin.left+','+margin.top+')');
 		// Sets up text elements for constellation name
 		g.append('text')

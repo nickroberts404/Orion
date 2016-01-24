@@ -2,6 +2,7 @@
 
 var d3 = require('d3');
 var calc = require('./calculation.js');
+var connect = require('./connection.js');
 
 module.exports = {
 	name: function(name){
@@ -31,10 +32,10 @@ function draw_main_stars(s, scale){
 		.attr('r', function(d){ return scale.mag(d.mag)})
 		.attr('cx', function(d){ return scale.x(calc.coordinates(d)[0]) })
 		.attr('cy', function(d){ return scale.y(calc.coordinates(d)[1]) })
-		.on('click', function(d, i){
-			console.log(d);
-		})
+		.attr('id', function(d){ return 'star'+d.id })
+		.on('click', connect.handle_star_click);
 }
+
 function draw_star_backings(s, scale){
 	s.append('circle')
 		.attr('class', 'stars-backing')

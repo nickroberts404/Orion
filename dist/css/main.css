@@ -8,17 +8,19 @@ svg {
 
 .stars {
   fill: steelblue;
-  opacity: 0.6;
-  stroke-width: 2; }
+  opacity: 0.6; }
   .stars:hover {
     opacity: 1; }
 
-.connections {
-  fill: none;
+.connections, .connection-temp {
   stroke: black;
-  opacity: 0.2;
   stroke-width: 0.5;
+  fill: none;
+  opacity: 0.2;
   stroke-linecap: round; }
+
+.connection-temp {
+  pointer-events: none; }
 
 .stars-backing {
   fill: white; }

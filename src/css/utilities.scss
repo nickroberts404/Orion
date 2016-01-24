@@ -12,3 +12,8 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+@mixin svg_stroke($color: black, $width: 2){
+	stroke: $color;
+	stroke-width: $width;
+}

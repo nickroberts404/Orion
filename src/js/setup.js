@@ -12,7 +12,11 @@ module.exports = {
 		var svg = d3.select('body').append('svg')
 			.attr('height', height + margin.top + margin.bottom)
 			.attr('width', width + margin.left + margin.right)
+			.attr('id', 'star-space');
+		svg.append('g')
+			.attr('id', 'line-layer');
 		var g = svg.append('g')
+			.attr('id', 'main-g')
 			.attr('transform', 'translate('+margin.left+','+margin.top+')');
 		// Sets up text elements for constellation name
 		g.append('text')

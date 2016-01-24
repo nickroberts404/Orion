@@ -13,14 +13,14 @@ module.exports = {
 		var g = svg.append('g')
 			.attr('transform', 'translate('+margin.left+','+margin.top+')');
 		// Sets up text elements for constellation name
-		svg.append('text')
-			.attr('x', width + margin.left + margin.right - 20)
-			.attr('y', height + margin.top + margin.bottom - 20)
+		g.append('text')
+			.attr('x', width+margin.right-20)
+			.attr('y', height+margin.bottom-20)
 			.attr('id', 'name')
 			.attr('text-anchor', 'end')
-		svg.append('text')
-			.attr('x', margin.left)
-			.attr('y', margin.top+20)
+		g.append('text')
+			.attr('x', -20)
+			.attr('y', 0)
 			.attr('id', 'index')
 		return {g: g, height: height, width: width};
 	},

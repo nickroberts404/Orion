@@ -12,8 +12,6 @@ function star_map(constellations){
 }
 function draw_constellation(c){
 
-	draw.name(c.name);
-
 	var distances = calc.distances(c.stars);
 	var y_longest = distances.y_bound/space.height >= distances.x_bound/space.width;
 
@@ -38,6 +36,8 @@ function draw_constellation(c){
 	// draw.connections(space.g, c.lines, linegen);
 	// Draw stars
 	draw.stars(space.g, c.stars, scales);
+	
+	draw.name(c.name);
 
 }
 

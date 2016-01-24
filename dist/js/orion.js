@@ -19400,8 +19400,6 @@ function star_map(constellations){
 }
 function draw_constellation(c){
 
-	draw.name(c.name);
-
 	var distances = calc.distances(c.stars);
 	var y_longest = distances.y_bound/space.height >= distances.x_bound/space.width;
 
@@ -19426,6 +19424,8 @@ function draw_constellation(c){
 	// draw.connections(space.g, c.lines, linegen);
 	// Draw stars
 	draw.stars(space.g, c.stars, scales);
+	
+	draw.name(c.name);
 
 }
 
@@ -19527,14 +19527,14 @@ module.exports = {
 		var g = svg.append('g')
 			.attr('transform', 'translate('+margin.left+','+margin.top+')');
 		// Sets up text elements for constellation name
-		svg.append('text')
-			.attr('x', width + margin.left + margin.right - 20)
-			.attr('y', height + margin.top + margin.bottom - 20)
+		g.append('text')
+			.attr('x', width+margin.right-20)
+			.attr('y', height+margin.bottom-20)
 			.attr('id', 'name')
 			.attr('text-anchor', 'end')
-		svg.append('text')
-			.attr('x', margin.left)
-			.attr('y', margin.top+20)
+		g.append('text')
+			.attr('x', -20)
+			.attr('y', 0)
 			.attr('id', 'index')
 		return {g: g, height: height, width: width};
 	},

@@ -5,24 +5,35 @@ var minijs			= require('gulp-uglify');
 var browserify 		= require('browserify');
 var source 			= require('vinyl-source-stream');
 var buffer			= require('vinyl-buffer');
+var connect 			= require('gulp-connect');
 
 // This task compiles sass into css.
-gulp.task('dev-sass', () =>{
+gulp.task('dev-sass', ()=> {
 	return gulp.src('./src/css/main.scss')
 		.pipe(sass('main.css'))
-		.pipe(gulp.dest('./dist/css'));
+		.pipe(gulp.dest('./dist/css'))
+		.pipe(connect.reload())
 });
 
 // This task bundles our scripts using browserify.
-gulp.task('dev-scripts', () =>{
+gulp.task('dev-scripts', ()=> {
 	return browserify('./src/js/app.js')
 		.bundle()
 		.pipe(source('orion.js'))
-		.pipe(gulp.dest('./dist/js'));
+		.pipe(gulp.dest('./dist/js'))
+		.pipe(connect.reload())
+
 });
 
+// This task keeps an eye on our source files and rebuilds them when they change.
+gulp.task('dev-watch', ()=> {
+	gulp.watch('./src/css/**/*.scss', 	['dev-sass']);
+	gulp.watch('./src/js/**/*.js', 		['dev-scripts']);
+	gulp.watch('./index.html', 			['reload']);
+})
+
 // This task compiles sass into css, and then minifies it.
-gulp.task('pro-sass', () =>{
+gulp.task('pro-sass', ()=> {
 	return gulp.src('./src/css/main.scss')
 		.pipe(sass('main.css'))
 		.pipe(minicss())
@@ -30,7 +41,7 @@ gulp.task('pro-sass', () =>{
 });
 
 // This task bundles our scripts using browserify, and then minifies it.
-gulp.task('pro-scripts', () =>{
+gulp.task('pro-scripts', ()=> {
 	return browserify('./src/js/app.js')
 		.bundle()
 		.pipe(source('orion.js'))
@@ -39,15 +50,25 @@ gulp.task('pro-scripts', () =>{
 		.pipe(gulp.dest('./dist/js'));
 });
 
+// This task spins up a development server for us.
+gulp.task('connect', ()=> {
+	connect.server({
+		livereload: true,
+		port: 2000
+	});
+})
+
+// This task can be used to manually reload our server.
+gulp.task('reload', ()=>{
+	gulp.src('./').pipe(connect.reload());
+})
+
 
 // This is the task we will run while developing our application.
 // It will enable continuous development.
-gulp.task('development', ()=>{
-	gulp.watch('./src/css/**/*.scss', ['dev-sass']);
-	gulp.watch('./src/js/**/*.js', ['dev-scripts']);
-});
+gulp.task('development', ['dev-scripts', 'dev-sass', 'connect', 'dev-watch']);
 
 // This is the task we will run when we're ready to put our app into production.
 // It will include a few optimiztions.
-gulp.task('production', ['pro-sass', 'pro-scripts'])
+gulp.task('production', ['pro-sass', 'pro-scripts']);
 

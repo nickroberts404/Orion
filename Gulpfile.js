@@ -1,11 +1,14 @@
-var gulp 			= require('gulp');
-var sass 			= require('gulp-sass');
-var minicss			= require('gulp-cssnano');
-var minijs			= require('gulp-uglify');
-var browserify 		= require('browserify');
-var source 			= require('vinyl-source-stream');
-var buffer			= require('vinyl-buffer');
-var connect 			= require('gulp-connect');
+const gulp 			= require('gulp');
+const sass 			= require('gulp-sass');
+const minicss		= require('gulp-cssnano');
+const minijs		= require('gulp-uglify');
+const browserify 	= require('browserify');
+const source 		= require('vinyl-source-stream');
+const buffer		= require('vinyl-buffer');
+const connect 		= require('gulp-connect');
+const open 			= require('gulp-open');
+
+const port = 2000;
 
 // This task compiles sass into css.
 gulp.task('dev-sass', ()=> {
@@ -54,7 +57,7 @@ gulp.task('pro-scripts', ()=> {
 gulp.task('connect', ()=> {
 	connect.server({
 		livereload: true,
-		port: 2000
+		port: port
 	});
 })
 
@@ -63,10 +66,15 @@ gulp.task('reload', ()=>{
 	gulp.src('./').pipe(connect.reload());
 })
 
+gulp.task('open',  ()=>{
+	gulp.src(__filename)
+		.pipe(open({uri: 'http://localhost:'+port}))
+})
+
 
 // This is the task we will run while developing our application.
 // It will enable continuous development.
-gulp.task('development', ['dev-scripts', 'dev-sass', 'connect', 'dev-watch']);
+gulp.task('development', ['dev-scripts', 'dev-sass', 'connect', 'open', 'dev-watch']);
 
 // This is the task we will run when we're ready to put our app into production.
 // It will include a few optimiztions.

@@ -14,6 +14,7 @@ const port = 2000;
 gulp.task('dev-sass', ()=> {
 	return gulp.src('./src/css/main.scss')
 		.pipe(sass('main.css'))
+		.on('error', handle_error)
 		.pipe(gulp.dest('./dist/css'))
 		.pipe(connect.reload())
 });
@@ -21,8 +22,11 @@ gulp.task('dev-sass', ()=> {
 // This task bundles our scripts using browserify.
 gulp.task('dev-scripts', ()=> {
 	return browserify('./src/js/app.js')
+		.on('error', handle_error)
 		.bundle()
+		.on('error', handle_error)
 		.pipe(source('orion.js'))
+		.on('error', handle_error)
 		.pipe(gulp.dest('./dist/js'))
 		.pipe(connect.reload())
 
@@ -70,6 +74,11 @@ gulp.task('open',  ()=>{
 	gulp.src(__filename)
 		.pipe(open({uri: 'http://localhost:'+port}))
 })
+
+function handle_error(err){
+	console.error(err);
+	this.emit('end');
+}
 
 
 // This is the task we will run while developing our application.

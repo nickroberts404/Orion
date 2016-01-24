@@ -1,3 +1,5 @@
+// app.js
+
 var d3 = require('d3');
 var setup = require('./setup.js');
 var draw = require('./drawing.js');
@@ -36,7 +38,7 @@ function draw_constellation(c){
 	// draw.connections(space.g, c.lines, linegen);
 	// Draw stars
 	draw.stars(space.g, c.stars, scales);
-	
+
 	draw.name(c.name);
 
 }

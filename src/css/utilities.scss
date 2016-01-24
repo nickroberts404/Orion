@@ -1,0 +1,14 @@
+// utilities.scss
+
+@mixin large_text(){
+	font-size: 40px;
+	font-weight: 900;
+	opacity: 0.2;
+	fill: $color-primary;
+}
+@mixin absolute_center(){
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

@@ -1,24 +1,24 @@
-$color-primary: steelblue;
-$color-star-backing: white;
-@mixin large_text(){
-	font-size: 40px;
-	font-weight: 900;
-	opacity: 0.2;
-	fill: $color-primary;
-}
+// main.scss
+
+@import 'variables.scss';
+@import 'utilities.scss';
 
 svg{	
 	border: 1px solid #bbb;
-	/*border-radius: 50%;*/
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	// border-radius: 50%;
+	background-color: $color-background;
+	@include absolute_center();
 }
+
 .stars{
 	fill: $color-primary;
 	opacity: 0.6;
+	stroke-width: 2;
+	&:hover{
+		opacity: 1;
+	}
 }
+
 .connections{
 	fill: none;
 	stroke:black;
@@ -27,7 +27,7 @@ svg{
 	stroke-linecap: round;
 }
 .stars-backing{
-	fill: $color-star-backing;
+	fill: $color-background;
 }
 #name{
 	@include large_text();

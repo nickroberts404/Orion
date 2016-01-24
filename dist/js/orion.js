@@ -19386,6 +19386,8 @@ return jQuery;
 }));
 
 },{}],3:[function(require,module,exports){
+// app.js
+
 var d3 = require('d3');
 var setup = require('./setup.js');
 var draw = require('./drawing.js');
@@ -19424,7 +19426,7 @@ function draw_constellation(c){
 	// draw.connections(space.g, c.lines, linegen);
 	// Draw stars
 	draw.stars(space.g, c.stars, scales);
-	
+
 	draw.name(c.name);
 
 }
@@ -19469,6 +19471,8 @@ module.exports = {
 	}
 }
 },{"d3":1}],5:[function(require,module,exports){
+// drawing.js
+
 var d3 = require('d3');
 var calc = require('./calculation.js');
 
@@ -19500,6 +19504,9 @@ function draw_main_stars(s, scale){
 		.attr('r', function(d){ return scale.mag(d.mag)})
 		.attr('cx', function(d){ return scale.x(calc.coordinates(d)[0]) })
 		.attr('cy', function(d){ return scale.y(calc.coordinates(d)[1]) })
+		.on('click', function(d, i){
+			console.log(d);
+		})
 }
 function draw_star_backings(s, scale){
 	s.append('circle')
@@ -19512,6 +19519,8 @@ function draw_star_backings(s, scale){
 		})
 }
 },{"./calculation.js":4,"d3":1}],6:[function(require,module,exports){
+// setup.js
+
 var d3 = require('d3');
 var $ = require('jquery');
 

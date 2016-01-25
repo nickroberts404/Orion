@@ -1,0 +1,93 @@
+Files: 
+	app.js
+	setup.js
+	constellation.js
+	star.js
+	connection.js
+	draw.js
+	calculation.js
+	telescope.js
+
+app.js
+	Dependencies: 
+		setup.js
+		constellation.js
+		telescope.js
+
+	Description: 
+		This module is the entry point of our application and will kick things into action.
+
+	Methods: 
+
+setup.js
+	Dependencies:
+		d3
+
+	Description: 
+		This module will have methods to create the D3 canvas we'll use for our visualizations.
+
+	Methods: 
+		init_space(dimensions)
+		init_big_text(dimensions)
+
+constellation.js
+	Dependencies:
+
+	Description: 
+		This module will have methods to create the D3 canvas we'll use for our visualizations.
+
+	Methods: 
+		
+star.js
+	Dependencies:
+
+	Description: 
+		This module will have methods to create the D3 canvas we'll use for our visualizations.
+
+	Methods: 
+		
+connection.js
+	Dependencies:
+
+	Description: 
+		This module will have methods to create the D3 canvas we'll use for our visualizations.
+
+	Methods: 
+		
+draw.js
+	Dependencies:
+		d3
+
+	Description: 
+		This module will have methods to draw our svg elements.
+
+	Methods: 
+		connections()
+		stars()
+		star_buffers()
+		
+calculation.js
+	Dependencies:
+
+	Description: 
+		This module will have methods to calculate various values, a kind of utility method.
+
+	Methods: 
+		coordinates(star)
+		distances(stars)
+		offset(length, main_bound, secondary_bound)
+		scale(domain, range)
+		line_generator(scales, stars)
+		
+telescope.js
+	Dependencies:
+
+	Description: 
+		This module will have methods to create the D3 canvas we'll use for our visualizations.
+
+	Methods: 
+		get_stars()
+		get_constellations()
+		create_connection()
+		remove_connection()
+

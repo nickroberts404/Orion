@@ -19,10 +19,13 @@ svg{
 }
 
 .connections{
-	@include svg_stroke(black, 0.5);
+	@include svg_stroke(black, 2);
 	fill: none;
 	opacity: 0.2;
 	stroke-linecap: round;
+	&:hover{
+		@include svg_stroke(red, 3);
+	}
 }
 .connection-temp{
 	@extend .connections;

@@ -14,10 +14,13 @@ svg {
 
 .connections, .connection-temp {
   stroke: black;
-  stroke-width: 0.5;
+  stroke-width: 2;
   fill: none;
   opacity: 0.2;
   stroke-linecap: round; }
+  .connections:hover, .connection-temp:hover {
+    stroke: red;
+    stroke-width: 3; }
 
 .connection-temp {
   pointer-events: none; }

@@ -19504,15 +19504,15 @@ function connect_stars(s1, s2){
 	var y1 = s1.cy.baseVal.value;
 	var x2 = s2.cx.baseVal.value;
 	var y2 = s2.cy.baseVal.value;
-	var id = 'connection'+s1.id.slice(4)+s2.id.slice(4);
-	draw_line(x1, y1, x2+50, y2+50, 'connections', id)
+
+	draw_line(x1, y1, x2+50, y2+50, 'connections', [s1.id.slice(4), s2.id.slice(4)])
 }
 
-function draw_line(x1, y1, x2, y2, line_class, line_id){
+function draw_line(x1, y1, x2, y2, line_class, stars){
 	d3.select('#line-layer')
 		.append('line')
-		.datum({id: line_id})
-		.attr('id', line_id)
+		.datum({stars: stars})
+		.attr('id', 'connection'+stars[0]+stars[1])
 		.attr('class', line_class)
 		.attr('x1', x1+50)
 		.attr('y1', y1+50)

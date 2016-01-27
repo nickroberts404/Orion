@@ -3,15 +3,10 @@
 
 var setup = require('./setup.js');
 var constellation = require('./constellation.js');
+var scope = require('./scope_variables');
 
-var dim = {
-	width: 500,
-	height: 500,
-	margins: {top: 50, right: 50, bottom: 50, left: 50}
-}
+setup.init_space();
+setup.init_big_text();
 
-setup.init_space(dim);
-setup.init_big_text(dim);
-
-constellation.init_constellation(dim);
+constellation.init();
 

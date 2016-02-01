@@ -5,7 +5,8 @@ var calc = require('./calculation.js');
 var scope = require('./scope_variables');
 var skyglass = require('skyglass');
 var star = require('./star.js');
-// var connection = require('./connection.js');
+var connection = require('./connection.js');
+var draw = require('./draw.js');
 
 var initial_constellation = "And";
 var current_constellation;
@@ -23,7 +24,8 @@ function process(err, data){
 function render(con, scales){
 	console.log({con: con, scales: scales});
 	star.render(con.stars, scales);
-	// connection.render(con.connections, scales);
+	connection.render(con.connections, scales);
+	draw.label(con.name);
 }
 
 module.exports = {

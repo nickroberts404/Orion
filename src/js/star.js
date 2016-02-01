@@ -18,11 +18,3 @@ module.exports = {
 	}
 
 }
-
-function objToArr(obj){
-	var arr = [];
-	for(p in obj){
-		arr.push(obj[p]);
-	}
-	return arr;
-}

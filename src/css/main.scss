@@ -34,9 +34,9 @@ svg{
 	@extend .connections;
 	pointer-events: none;
 }
-#name{
+#con-name{
 	@include large_text();
 }
-#index{
+#star-name{
 	@include large_text();
 }

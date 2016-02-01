@@ -28,13 +28,13 @@ svg {
 .connection-temp {
   pointer-events: none; }
 
-#name {
+#con-name {
   font-size: 40px;
   font-weight: 900;
   opacity: 0.2;
   fill: steelblue; }
 
-#index {
+#star-name {
   font-size: 40px;
   font-weight: 900;
   opacity: 0.2;

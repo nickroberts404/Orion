@@ -42104,8 +42104,8 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-}).call(this,{"isBuffer":require("../../../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216}],273:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
+},{"../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216}],273:[function(require,module,exports){
 arguments[4][215][0].apply(exports,arguments)
 },{"dup":215}],274:[function(require,module,exports){
 arguments[4][217][0].apply(exports,arguments)
@@ -42374,8 +42374,8 @@ CombinedStream.prototype._emitError = function(err) {
   this.emit('error', err);
 };
 
-}).call(this,{"isBuffer":require("../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"delayed-stream":280,"stream":237,"util":248}],280:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
+},{"../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"delayed-stream":280,"stream":237,"util":248}],280:[function(require,module,exports){
 var Stream = require('stream').Stream;
 var util = require('util');
 
@@ -45784,8 +45784,8 @@ module.exports = {
 
 };
 
-}).call(this,{"isBuffer":require("../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"./utils":316,"assert-plus":318,"crypto":21,"http":238,"jsprim":319,"sshpk":335,"util":248}],316:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
+},{"../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"./utils":316,"assert-plus":318,"crypto":21,"http":238,"jsprim":319,"sshpk":335,"util":248}],316:[function(require,module,exports){
 // Copyright 2012 Joyent, Inc.  All rights reserved.
 
 var assert = require('assert-plus');
@@ -46200,8 +46200,8 @@ function _setExports(ndebug) {
 
 module.exports = _setExports(process.env.NODE_NDEBUG);
 
-}).call(this,{"isBuffer":require("../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")},require('_process'))
-},{"../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"_process":219,"assert":2,"stream":237,"util":248}],319:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")},require('_process'))
+},{"../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"_process":219,"assert":2,"stream":237,"util":248}],319:[function(require,module,exports){
 /*
  * lib/jsprim.js: utilities for primitive JavaScript types
  */
@@ -53565,8 +53565,8 @@ var crypto = require('crypto');
 
 module.exports = ns;
 
-}).call(this,{"isBuffer":require("../../../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"./core":351,"./curve255":352,"./utils":355,"crypto":21,"jsbn":356}],355:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
+},{"../../../../../../../../browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":216,"./core":351,"./curve255":352,"./utils":355,"crypto":21,"jsbn":356}],355:[function(require,module,exports){
 "use strict";
 /**
  * @fileOverview
@@ -68994,13 +68994,19 @@ module.exports = {
 	getConstellations: function(cb){
 		console.log('Getting constellations...');
 		request(api+'/constellations', function(err, res, body){
-			cb(err, JSON.parse(body));
+			body = JSON.parse(body);
+			for(con in body){
+				body[con].connections = parseConnections(body[con].connections);
+			}
+			cb(err, body);
 		});
 	},
 	getConstellation: function(con, cb){
 		console.log('Getting constellation '+con+'...');
 		request(api+'/constellations?con='+con, function(err, res, body){
-			cb(err, JSON.parse(body));
+			body = JSON.parse(body);
+			body.connections = parseConnections(body.connections);
+			cb(err, body);
 		});
 	},
 	addToConstellation: function(stars, cb){
@@ -69041,6 +69047,13 @@ function makePutRequest(url, body, cb){
 		});
 }
 
+function parseConnections(connections){
+	return connections.map(function(val){
+		val = val.split('-');
+		return [parseInt(val[0]), parseInt(val[1])];
+	})
+}
+
 function buildQuery(options){
 	var query = '?';
 	for (option in options) {
@@ -69062,7 +69075,7 @@ setup.init_big_text();
 constellation.init();
 
 
-},{"./constellation.js":383,"./scope_variables":385,"./setup.js":386}],382:[function(require,module,exports){
+},{"./constellation.js":384,"./scope_variables":386,"./setup.js":387}],382:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -69117,7 +69130,29 @@ module.exports = {
 function create_scale(domain, range){
 	return d3.scale.linear().domain(domain).range(range); 
 }
-},{"./scope_variables":385,"d3":252}],383:[function(require,module,exports){
+},{"./scope_variables":386,"d3":252}],383:[function(require,module,exports){
+// connection.js
+// This module will control connection creation and rendering
+
+var d3 = require('d3');
+var draw = require('./draw.js');
+
+module.exports = {
+
+	// Creates the stars
+	render: function(connections, scales){
+		console.log(connections);
+		var g = d3.select('#line-layer').selectAll('.connection')
+			.data(connections);
+
+		// var enter = g.enter();
+		// var exit = g.exit();
+
+		// draw.stars(enter, exit, scales);
+	}
+
+}
+},{"./draw.js":385,"d3":252}],384:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -69125,7 +69160,8 @@ var calc = require('./calculation.js');
 var scope = require('./scope_variables');
 var skyglass = require('skyglass');
 var star = require('./star.js');
-// var connection = require('./connection.js');
+var connection = require('./connection.js');
+var draw = require('./draw.js');
 
 var initial_constellation = "And";
 var current_constellation;
@@ -69143,7 +69179,8 @@ function process(err, data){
 function render(con, scales){
 	console.log({con: con, scales: scales});
 	star.render(con.stars, scales);
-	// connection.render(con.connections, scales);
+	connection.render(con.connections, scales);
+	draw.label(con.name);
 }
 
 module.exports = {
@@ -69151,7 +69188,7 @@ module.exports = {
 	process: process,
 	render: render
 }
-},{"./calculation.js":382,"./scope_variables":385,"./star.js":387,"d3":252,"skyglass":380}],384:[function(require,module,exports){
+},{"./calculation.js":382,"./connection.js":383,"./draw.js":385,"./scope_variables":386,"./star.js":388,"d3":252,"skyglass":380}],385:[function(require,module,exports){
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
@@ -69169,6 +69206,9 @@ module.exports = {
 		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
+	},
+	label: function(label){
+		d3.select('#con-name').text(label);
 	}
 
 }
@@ -69187,7 +69227,7 @@ function append_star_buffer(star, mag_scale){
 		.attr('cy', 0)
 		.attr('r', function(d){ return mag_scale(d.mag) + 3})
 }
-},{"./calculation.js":382,"d3":252}],385:[function(require,module,exports){
+},{"./calculation.js":382,"d3":252}],386:[function(require,module,exports){
 // scope_variables.js
 
 module.exports = {
@@ -69197,7 +69237,7 @@ module.exports = {
 		margins: {top: 50, right: 50, bottom: 50, left: 50}
 	}
 }
-},{}],386:[function(require,module,exports){
+},{}],387:[function(require,module,exports){
 // setup.js
 // This module will have methods to create the D3 canvas we'll use for our visualizations.
 
@@ -69227,7 +69267,7 @@ module.exports = {
 		var dim = scope.dim;
 		var layer = d3.select('#text-layer');
 
-		appendText(layer, 'con-name', dim.width, dim.height)
+		appendText(layer, 'con-name', dim.width-10, dim.height-10)
 			.attr('text-anchor', 'end');
 		appendText(layer, 'star-name', 0, 0);
 
@@ -69260,7 +69300,7 @@ function appendText(target, id, x, y){
 
 
 
-},{"./scope_variables":385,"d3":252}],387:[function(require,module,exports){
+},{"./scope_variables":386,"d3":252}],388:[function(require,module,exports){
 // star.js
 // This module will control star creation and rendering
 
@@ -69281,12 +69321,4 @@ module.exports = {
 	}
 
 }
-
-function objToArr(obj){
-	var arr = [];
-	for(p in obj){
-		arr.push(obj[p]);
-	}
-	return arr;
-}
-},{"./draw.js":384,"d3":252}]},{},[381]);
+},{"./draw.js":385,"d3":252}]},{},[381]);

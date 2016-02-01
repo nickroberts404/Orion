@@ -15,6 +15,9 @@ module.exports = {
 		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
+	},
+	label: function(label){
+		d3.select('#con-name').text(label);
 	}
 
 }

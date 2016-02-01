@@ -69075,7 +69075,7 @@ setup.init_big_text();
 constellation.init();
 
 
-},{"./constellation.js":384,"./scope_variables":386,"./setup.js":387}],382:[function(require,module,exports){
+},{"./constellation.js":384,"./scope_variables":387,"./setup.js":388}],382:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -69138,7 +69138,7 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./scope_variables":386,"d3":252}],383:[function(require,module,exports){
+},{"./scope_variables":387,"d3":252}],383:[function(require,module,exports){
 // connection.js
 // This module will control connection creation and rendering
 
@@ -69186,9 +69186,12 @@ function process(err, data){
 	var scales = calc.scales(current_constellation.stars);
 	render(current_constellation, scales);
 }
-
+function update(){
+	var scales = calc.scales(current_constellation.stars);
+	render(current_constellation, scales);
+}
 function render(con, scales){
-	star.render(con.stars, scales);
+	star.render(con.stars, scales, con, update);
 	connection.render(con.connections, con.stars, scales);
 	draw.label(con.name);
 }
@@ -69198,11 +69201,12 @@ module.exports = {
 	process: process,
 	render: render
 }
-},{"./calculation.js":382,"./connection.js":383,"./draw.js":385,"./scope_variables":386,"./star.js":388,"d3":252,"skyglass":380}],385:[function(require,module,exports){
+},{"./calculation.js":382,"./connection.js":383,"./draw.js":385,"./scope_variables":387,"./star.js":389,"d3":252,"skyglass":380}],385:[function(require,module,exports){
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
 var skyglass = require('skyglass');
+var scope = require('./scope_variables.js')
 var calc = require('./calculation.js');
 
 module.exports = {
@@ -69226,6 +69230,16 @@ module.exports = {
 			.attr('class', 'connection')
 			.attr('d', linegen)
 	},
+	line: function(x1, y1, x2, y2, line_class){
+		console.log('Drawin line!');
+		d3.select('#line-layer')
+			.append('line')
+			.attr('class', line_class)
+			.attr('x1', x1)
+			.attr('y1', y1)
+			.attr('x2', x2 - scope.dim.margins.left)
+			.attr('y2', y2 - scope.dim.margins.top)
+	},
 	label: function(label){
 		d3.select('#con-name').text(label);
 	}
@@ -69246,7 +69260,64 @@ function append_star_buffer(star, mag_scale){
 		.attr('cy', 0)
 		.attr('r', function(d){ return mag_scale(d.mag) + 3})
 }
-},{"./calculation.js":382,"d3":252,"skyglass":380}],386:[function(require,module,exports){
+
+function line(x1, y1, x2, y2, line_class, stars){
+	d3.select('#line-layer')
+		.append('line')
+		.datum({stars: stars})
+		.attr('id', 'connection'+stars[0]+stars[1])
+		.attr('class', line_class)
+		.attr('x1', x1+50)
+		.attr('y1', y1+50)
+		.attr('x2', x2)
+		.attr('y2', y2)
+		.on('click', delete_connection)
+}
+},{"./calculation.js":382,"./scope_variables.js":387,"d3":252,"skyglass":380}],386:[function(require,module,exports){
+var d3 = require('d3');
+var draw = require('./draw.js');
+var skyglass = require('skyglass');
+
+var activeStar;
+var starDOM;
+var targetX; 
+var targetY; 
+
+function handleStarClick(star, con, update) {
+	var theStar = d3.select('#star'+star.id)[0][0];
+	if (!activeStar) {
+		activeStar = star
+		starDOM = theStar;
+		targetX = starDOM.transform.baseVal[0].matrix.e;
+		targetY = starDOM.transform.baseVal[0].matrix.f;
+		d3.select('#space-layer').on('mousemove', handleTempConnection)
+	} else {
+		d3.select('.connection-temp').remove();
+		d3.select('#space-layer').on('mousemove', null);
+		console.log([activeStar.id, star.id]);
+		con.connections.push([activeStar.id, star.id]);
+		console.log(con.connections);
+		skyglass.addConnection(con.abbr, [activeStar.id, star.id], function(){ 
+			activeStar = null;
+			starDOM = null;
+			update();
+		});
+	}
+}
+
+function handleTempConnection(stars) {
+	var e = d3.event;
+	d3.select('.connection-temp').remove();
+	draw.line(targetX, targetY, e.offsetX, e.offsetY, 'connection-temp');
+}
+
+module.exports = {
+
+	handleStarClick: handleStarClick
+	// handleTempConnection: handleTempConnection
+
+}
+},{"./draw.js":385,"d3":252,"skyglass":380}],387:[function(require,module,exports){
 // scope_variables.js
 
 module.exports = {
@@ -69256,7 +69327,7 @@ module.exports = {
 		margins: {top: 50, right: 50, bottom: 50, left: 50}
 	}
 }
-},{}],387:[function(require,module,exports){
+},{}],388:[function(require,module,exports){
 // setup.js
 // This module will have methods to create the D3 canvas we'll use for our visualizations.
 
@@ -69319,17 +69390,18 @@ function appendText(target, id, x, y){
 
 
 
-},{"./scope_variables":386,"d3":252}],388:[function(require,module,exports){
+},{"./scope_variables":387,"d3":252}],389:[function(require,module,exports){
 // star.js
 // This module will control star creation and rendering
 
 var d3 = require('d3');
 var draw = require('./draw.js');
+var interaction = require('./interaction.js');
 
 module.exports = {
 
 	// Creates the stars
-	render: function(stars, scales){
+	render: function(stars, scales, con, update){
 		stars = objToArr(stars);
 		var g = d3.select('#main-layer').selectAll('.star')
 			.data(stars)
@@ -69338,6 +69410,10 @@ module.exports = {
 		var exit = g.exit();
 
 		draw.stars(enter, exit, scales);
+
+		d3.selectAll('.star').on('click', function(star){
+			interaction.handleStarClick(star, con, update);
+		});
 	}
 
 }
@@ -69349,4 +69425,4 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./draw.js":385,"d3":252}]},{},[381]);
+},{"./draw.js":385,"./interaction.js":386,"d3":252}]},{},[381]);

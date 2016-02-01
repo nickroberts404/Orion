@@ -2,6 +2,7 @@
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
 var skyglass = require('skyglass');
+var scope = require('./scope_variables.js')
 var calc = require('./calculation.js');
 
 module.exports = {
@@ -25,6 +26,16 @@ module.exports = {
 			.attr('class', 'connection')
 			.attr('d', linegen)
 	},
+	line: function(x1, y1, x2, y2, line_class){
+		console.log('Drawin line!');
+		d3.select('#line-layer')
+			.append('line')
+			.attr('class', line_class)
+			.attr('x1', x1)
+			.attr('y1', y1)
+			.attr('x2', x2 - scope.dim.margins.left)
+			.attr('y2', y2 - scope.dim.margins.top)
+	},
 	label: function(label){
 		d3.select('#con-name').text(label);
 	}
@@ -44,4 +55,17 @@ function append_star_buffer(star, mag_scale){
 		.attr('cx', 0)
 		.attr('cy', 0)
 		.attr('r', function(d){ return mag_scale(d.mag) + 3})
+}
+
+function line(x1, y1, x2, y2, line_class, stars){
+	d3.select('#line-layer')
+		.append('line')
+		.datum({stars: stars})
+		.attr('id', 'connection'+stars[0]+stars[1])
+		.attr('class', line_class)
+		.attr('x1', x1+50)
+		.attr('y1', y1+50)
+		.attr('x2', x2)
+		.attr('y2', y2)
+		.on('click', delete_connection)
 }

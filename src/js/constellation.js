@@ -21,9 +21,12 @@ function process(err, data){
 	var scales = calc.scales(current_constellation.stars);
 	render(current_constellation, scales);
 }
-
+function update(){
+	var scales = calc.scales(current_constellation.stars);
+	render(current_constellation, scales);
+}
 function render(con, scales){
-	star.render(con.stars, scales);
+	star.render(con.stars, scales, con, update);
 	connection.render(con.connections, con.stars, scales);
 	draw.label(con.name);
 }

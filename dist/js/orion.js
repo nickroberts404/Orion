@@ -69144,11 +69144,12 @@ function objToArr(obj){
 
 var d3 = require('d3');
 var draw = require('./draw.js');
+var skyglass = require('skyglass');
 
 module.exports = {
 
 	// Creates the stars
-	render: function(connections, stars, scales){
+	render: function(connections, con, stars, scales, update){
 		console.log(connections);
 		var g = d3.select('#line-layer').selectAll('.connection')
 			.data(connections);
@@ -69158,11 +69159,16 @@ module.exports = {
 
 		draw.connections(enter, exit, stars, scales);
 
-		// d3.selectAll('#connections')
+		d3.selectAll('.connection').on('click', function(d){
+			d3.select('#connection'+d[0]+'-'+d[1]).remove();
+			skyglass.removeConnection(con.abbr, d, function(){
+				update();
+			})
+		})
 	}
 
 }
-},{"./draw.js":385,"d3":252}],384:[function(require,module,exports){
+},{"./draw.js":385,"d3":252,"skyglass":380}],384:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -69177,7 +69183,7 @@ var draw = require('./draw.js');
 var initial_constellation = "And";
 var current_constellation;
 
-function init(dim){
+function init(){
 	skyglass.getConstellations(process);
 }
 
@@ -69187,12 +69193,13 @@ function process(err, data){
 	render(current_constellation, scales);
 }
 function update(){
+	skyglass.getConstellations(process);
 	var scales = calc.scales(current_constellation.stars);
 	render(current_constellation, scales);
 }
 function render(con, scales){
-	star.render(con.stars, scales, con, update);
-	connection.render(con.connections, con.stars, scales);
+	star.render(con.stars, scales, con, init);
+	connection.render(con.connections, con, con.stars, scales, init);
 	draw.label(con.name);
 }
 
@@ -69228,6 +69235,7 @@ module.exports = {
 			.y(function(d){ return scales.y(calc.coordinates(stars[d])[1])})
 		enter.append('path')
 			.attr('class', 'connection')
+			.attr('id', function(d){ return 'connection'+d[0]+'-'+d[1] })
 			.attr('d', linegen)
 	},
 	line: function(x1, y1, x2, y2, line_class){
@@ -69294,9 +69302,6 @@ function handleStarClick(star, con, update) {
 	} else {
 		d3.select('.connection-temp').remove();
 		d3.select('#space-layer').on('mousemove', null);
-		console.log([activeStar.id, star.id]);
-		con.connections.push([activeStar.id, star.id]);
-		console.log(con.connections);
 		skyglass.addConnection(con.abbr, [activeStar.id, star.id], function(){ 
 			activeStar = null;
 			starDOM = null;

@@ -24,6 +24,7 @@ module.exports = {
 			.y(function(d){ return scales.y(calc.coordinates(stars[d])[1])})
 		enter.append('path')
 			.attr('class', 'connection')
+			.attr('id', function(d){ return 'connection'+d[0]+'-'+d[1] })
 			.attr('d', linegen)
 	},
 	line: function(x1, y1, x2, y2, line_class){

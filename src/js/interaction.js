@@ -18,9 +18,6 @@ function handleStarClick(star, con, update) {
 	} else {
 		d3.select('.connection-temp').remove();
 		d3.select('#space-layer').on('mousemove', null);
-		console.log([activeStar.id, star.id]);
-		con.connections.push([activeStar.id, star.id]);
-		console.log(con.connections);
 		skyglass.addConnection(con.abbr, [activeStar.id, star.id], function(){ 
 			activeStar = null;
 			starDOM = null;

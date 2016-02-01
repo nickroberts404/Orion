@@ -12,7 +12,7 @@ var draw = require('./draw.js');
 var initial_constellation = "And";
 var current_constellation;
 
-function init(dim){
+function init(){
 	skyglass.getConstellations(process);
 }
 
@@ -22,12 +22,13 @@ function process(err, data){
 	render(current_constellation, scales);
 }
 function update(){
+	skyglass.getConstellations(process);
 	var scales = calc.scales(current_constellation.stars);
 	render(current_constellation, scales);
 }
 function render(con, scales){
-	star.render(con.stars, scales, con, update);
-	connection.render(con.connections, con.stars, scales);
+	star.render(con.stars, scales, con, init);
+	connection.render(con.connections, con, con.stars, scales, init);
 	draw.label(con.name);
 }
 

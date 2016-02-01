@@ -69192,11 +69192,7 @@ function process(err, data){
 	var scales = calc.scales(current_constellation.stars);
 	render(current_constellation, scales);
 }
-function update(){
-	skyglass.getConstellations(process);
-	var scales = calc.scales(current_constellation.stars);
-	render(current_constellation, scales);
-}
+
 function render(con, scales){
 	star.render(con.stars, scales, con, init);
 	connection.render(con.connections, con, con.stars, scales, init);
@@ -69250,6 +69246,9 @@ module.exports = {
 	},
 	label: function(label){
 		d3.select('#con-name').text(label);
+	},
+	name: function(name){
+		d3.select('#star-name').text(name);
 	}
 
 }
@@ -69364,7 +69363,7 @@ module.exports = {
 
 		appendText(layer, 'con-name', dim.width-10, dim.height-10)
 			.attr('text-anchor', 'end');
-		appendText(layer, 'star-name', 0, 0);
+		appendText(layer, 'star-name', 10, 40);
 
 	}
 }
@@ -69416,9 +69415,17 @@ module.exports = {
 
 		draw.stars(enter, exit, scales);
 
-		d3.selectAll('.star').on('click', function(star){
-			interaction.handleStarClick(star, con, update);
-		});
+		d3.selectAll('.star')
+			.on('click', function(star){
+				interaction.handleStarClick(star, con, update);
+			})
+			.on('mouseover', function(star){
+				draw.name(star.proper || star.bf);
+			})
+			.on('mouseout', function(){
+				draw.name('');
+			})
+
 	}
 
 }

@@ -29,7 +29,7 @@ module.exports = {
 
 		appendText(layer, 'con-name', dim.width-10, dim.height-10)
 			.attr('text-anchor', 'end');
-		appendText(layer, 'star-name', 0, 0);
+		appendText(layer, 'star-name', 10, 40);
 
 	}
 }

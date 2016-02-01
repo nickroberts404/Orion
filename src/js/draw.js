@@ -39,6 +39,9 @@ module.exports = {
 	},
 	label: function(label){
 		d3.select('#con-name').text(label);
+	},
+	name: function(name){
+		d3.select('#star-name').text(name);
 	}
 
 }

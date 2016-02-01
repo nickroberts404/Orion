@@ -21,11 +21,7 @@ function process(err, data){
 	var scales = calc.scales(current_constellation.stars);
 	render(current_constellation, scales);
 }
-function update(){
-	skyglass.getConstellations(process);
-	var scales = calc.scales(current_constellation.stars);
-	render(current_constellation, scales);
-}
+
 function render(con, scales){
 	star.render(con.stars, scales, con, init);
 	connection.render(con.connections, con, con.stars, scales, init);

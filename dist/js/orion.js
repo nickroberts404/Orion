@@ -69075,7 +69075,26 @@ setup.init_big_text();
 constellation.init();
 
 
-},{"./constellation.js":384,"./scope_variables":387,"./setup.js":388}],382:[function(require,module,exports){
+},{"./constellation.js":385,"./scope_variables":389,"./setup.js":390}],382:[function(require,module,exports){
+// buttons.js
+
+var nextBtn = document.getElementById('next-btn');
+var prevBtn = document.getElementById('prev-btn');
+
+function handleButtons (next, prev, render){
+	nextBtn.addEventListener('click', function() {
+		render(next());
+	})
+
+	prevBtn.addEventListener('click', function() {
+		render(prev());
+	})
+}
+
+module.exports = {
+	handleButtons: handleButtons
+}
+},{}],383:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -69138,7 +69157,7 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./scope_variables":387,"d3":252}],383:[function(require,module,exports){
+},{"./scope_variables":389,"d3":252}],384:[function(require,module,exports){
 // connection.js
 // This module will control connection creation and rendering
 
@@ -69150,7 +69169,6 @@ module.exports = {
 
 	// Creates the stars
 	render: function(connections, con, stars, scales, update){
-		console.log(connections);
 		var g = d3.select('#line-layer').selectAll('.connection')
 			.data(connections);
 
@@ -69168,7 +69186,7 @@ module.exports = {
 	}
 
 }
-},{"./draw.js":385,"d3":252,"skyglass":380}],384:[function(require,module,exports){
+},{"./draw.js":387,"d3":252,"skyglass":380}],385:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -69179,21 +69197,31 @@ var scope = require('./scope_variables');
 var star = require('./star.js');
 var connection = require('./connection.js');
 var draw = require('./draw.js');
+var constellationNames = require('./constellationNames.js');
+var buttons  = require('./buttons');
 
-var initial_constellation = "And";
+var initial_constellation = constellationNames.initial();
+var constellation_data;
 var current_constellation;
+
+buttons.handleButtons(constellationNames.next, constellationNames.prev, function(name){
+	current_constellation = constellation_data[name];
+	render(current_constellation);
+});
 
 function init(){
 	skyglass.getConstellations(process);
 }
 
 function process(err, data){
+	constellation_data = data;
 	current_constellation = data[initial_constellation];
-	var scales = calc.scales(current_constellation.stars);
-	render(current_constellation, scales);
+	render(current_constellation);
 }
 
-function render(con, scales){
+function render(con){
+	console.log(con);
+	var scales = calc.scales(current_constellation.stars);
 	star.render(con.stars, scales, con, init);
 	connection.render(con.connections, con, con.stars, scales, init);
 	draw.label(con.name);
@@ -69204,7 +69232,122 @@ module.exports = {
 	process: process,
 	render: render
 }
-},{"./calculation.js":382,"./connection.js":383,"./draw.js":385,"./scope_variables":387,"./star.js":389,"d3":252,"skyglass":380}],385:[function(require,module,exports){
+},{"./buttons":382,"./calculation.js":383,"./connection.js":384,"./constellationNames.js":386,"./draw.js":387,"./scope_variables":389,"./star.js":391,"d3":252,"skyglass":380}],386:[function(require,module,exports){
+// constellationNames.js
+
+var constellations = [
+{name:"Andromeda",meaning:"Daughter of Cassiopeia",abbr:"And"},
+{name:"Antlia",meaning:"The Air Pump",abbr:"Ant"},
+{name:"Apus",meaning:"Bird of Paradise",abbr:"Aps"},
+{name:"Aquarius",meaning:"The Water-Bearer",abbr:"Aqr"},
+{name:"Aquila",meaning:"The Eagle",abbr:"Aql"},
+{name:"Ara",meaning:"The Altar",abbr:"Ara"},
+{name:"Aries",meaning:"The Ram",abbr:"Ari"},
+{name:"Auriga",meaning:"The Charioteer",abbr:"Aur"},
+{name:"Boötes",meaning:"The Herdsman",abbr:"Boo"},
+{name:"Caelum",meaning:"The Chisel",abbr:"Cae"},
+{name:"Camelopardalis",meaning:"The Giraffe",abbr:"Cam"},
+{name:"Cancer",meaning:"The Crab",abbr:"Cnc"},
+{name:"Canes Venatici",meaning:"The Hunting Dogs",abbr:"CVn"},
+{name:"Canis Major",meaning:"The Big Dog",abbr:"CMa"},
+{name:"Canis Minor",meaning:"The Little Dog",abbr:"CMi"},
+{name:"Capricornus",meaning:"The Goat",abbr:"Cap"},
+{name:"Carina",meaning:"The Keel (of Argo)",abbr:"Car"},
+{name:"Cassiopeia",meaning:"The Queen",abbr:"Cas"},
+{name:"Centaurus",meaning:"The Centaur",abbr:"Cen"},
+{name:"Cepheus",meaning:"The King",abbr:"Cep"},
+{name:"Cetus",meaning:"The Whale",abbr:"Cet"},
+{name:"Chamaeleon",meaning:"The Chameleon",abbr:"Cha"},
+{name:"Circinus",meaning:"The Compasses",abbr:"Cir"},
+{name:"Columba",meaning:"The Dove",abbr:"Col"},
+{name:"Coma Berenices",meaning:"Berenice's Hair",abbr:"Com"},
+{name:"Corona Australis",meaning:"The Southern Crown",abbr:"CrA"},
+{name:"Corona Borealis",meaning:"The Northern Crown",abbr:"CrB"},
+{name:"Corvus",meaning:"The Crow",abbr:"Crv"},
+{name:"Crater",meaning:"The Cup",abbr:"Crt"},
+{name:"Crux",meaning:"The Cross",abbr:"Cru"},
+{name:"Cygnus",meaning:"The Swan",abbr:"Cyg"},
+{name:"Delphinus",meaning:"The Dolphin",abbr:"Del"},
+{name:"Dorado",meaning:"The Swordfish",abbr:"Dor"},
+{name:"Draco",meaning:"The Dragon",abbr:"Dra"},
+{name:"Equuleus",meaning:"The Little Horse",abbr:"Equ"},
+{name:"Eridanus",meaning:"The River",abbr:"Eri"},
+{name:"Fornax",meaning:"The Furnace",abbr:"For"},
+{name:"Gemini",meaning:"The Twins",abbr:"Gem"},
+{name:"Grus",meaning:"The Crane (bird)",abbr:"Gru"},
+{name:"Hercules",meaning:"The Son of Zeus",abbr:"Her"},
+{name:"Horologium",meaning:"The Clock",abbr:"Hor"},
+{name:"Hydra",meaning:"The Water Snake (female)",abbr:"Hya"},
+{name:"Hydrus",meaning:"The Water Snake (male)",abbr:"Hyi"},
+{name:"Indus",meaning:"The Indian (American)",abbr:"Ind"},
+{name:"Lacerta",meaning:"The Lizard",abbr:"Lac"},
+{name:"Leo",meaning:"The Lion",abbr:"Leo"},
+{name:"Leo Minor",meaning:"The Little Lion",abbr:"LMi"},
+{name:"Lepus",meaning:"The Hare",abbr:"Lep"},
+{name:"Libra",meaning:"The Balance",abbr:"Lib"},
+{name:"Lupus",meaning:"The Wolf",abbr:"Lup"},
+{name:"Lynx",meaning:"The Lynx",abbr:"Lyn"},
+{name:"Lyra",meaning:"The Lyre",abbr:"Lyr"},
+{name:"Mensa",meaning:"The Table",abbr:"Men"},
+{name:"Microscopium",meaning:"The Microscope",abbr:"Mic"},
+{name:"Monoceros",meaning:"The Unicorn",abbr:"Mon"},
+{name:"Musca",meaning:"The Fly",abbr:"Mus"},
+{name:"Norma",meaning:"The Square",abbr:"Nor"},
+{name:"Octans",meaning:"The Octant",abbr:"Oct"},
+{name:"Ophiuchus",meaning:"The Serpent-Bearer",abbr:"Oph"},
+{name:"Orion",meaning:"The Hunter",abbr:"Ori"},
+{name:"Pavo",meaning:"The Peacock",abbr:"Pav"},
+{name:"Pegasus",meaning:"The Winged Horse",abbr:"Peg"},
+{name:"Perseus",meaning:"Rescuer of Andromeda",abbr:"Per"},
+{name:"Phoenix",meaning:"The Phoenix",abbr:"Phe"},
+{name:"Pictor",meaning:"The Painter",abbr:"Pic"},
+{name:"Pisces",meaning:"The Fishes",abbr:"Psc"},
+{name:"Piscis Austrinus",meaning:"The Southern Fish",abbr:"PsA"},
+{name:"Puppis",meaning:"The Stern (of Argo)",abbr:"Pup"},
+{name:"Pyxis",meaning:"The Compass",abbr:"Pyx"},
+{name:"Reticulum",meaning:"The Reticle",abbr:"Ret"},
+{name:"Sagitta",meaning:"The Arrow",abbr:"Sge"},
+{name:"Sagittarius",meaning:"The Archer",abbr:"Sgr"},
+{name:"Scorpius",meaning:"The Scorpion",abbr:"Sco"},
+{name:"Sculptor",meaning:"The Sculptor",abbr:"Scl"},
+{name:"Scutum",meaning:"The Shield",abbr:"Sct"},
+{name:"Serpens",meaning:"The Serpent",abbr:"Ser"},
+{name:"Sextans",meaning:"The Sextant",abbr:"Sex"},
+{name:"Taurus",meaning:"The Bull",abbr:"Tau"},
+{name:"Telescopium",meaning:"The Telescope",abbr:"Tel"},
+{name:"Triangulum",meaning:"The Triangle",abbr:"Tri"},
+{name:"Triangulum Australe",meaning:"The Southern Triangle",abbr:"TrA"},
+{name:"Tucana",meaning:"The Toucan",abbr:"Tuc"},
+{name:"Ursa Major",meaning:"The Great Bear",abbr:"UMa"},
+{name:"Ursa Minor",meaning:"The Little Bear",abbr:"UMi"},
+{name:"Vela",meaning:"The Sails (of Argo)",abbr:"Vel"},
+{name:"Virgo",meaning:"The Maiden",abbr:"Vir"},
+{name:"Volans",meaning:"The Flying Fish",abbr:"Vol"},
+{name:"Vulpecula",meaning:"The Fox",abbr:"Vul"}
+];
+
+var index = 0;
+
+function initial() {
+	return constellations[index].abbr;
+}
+
+function next() {
+	index++;
+	return constellations[index].abbr;
+}
+
+function prev() {
+	index--;
+	return constellations[index].abbr;
+}
+
+module.exports = {
+	initial: initial,
+	next: next,
+	prev: prev
+}
+},{}],387:[function(require,module,exports){
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
@@ -69221,13 +69364,12 @@ module.exports = {
 			.attr('transform', function(d){
 				return 'translate('+ scales.x(calc.coordinates(d)[0]) + ', '+ scales.y(calc.coordinates(d)[1]) +')'; 
 			})
-		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
 	},
 	connections: function(enter, exit, stars, scales){
 		var linegen =  d3.svg.line()
-			.x(function(d){ console.log(d); return scales.x(calc.coordinates(stars[d])[0])})
+			.x(function(d){ return scales.x(calc.coordinates(stars[d])[0])})
 			.y(function(d){ return scales.y(calc.coordinates(stars[d])[1])})
 		enter.append('path')
 			.attr('class', 'connection')
@@ -69235,7 +69377,6 @@ module.exports = {
 			.attr('d', linegen)
 	},
 	line: function(x1, y1, x2, y2, line_class){
-		console.log('Drawin line!');
 		d3.select('#line-layer')
 			.append('line')
 			.attr('class', line_class)
@@ -69280,7 +69421,7 @@ function line(x1, y1, x2, y2, line_class, stars){
 		.attr('y2', y2)
 		.on('click', delete_connection)
 }
-},{"./calculation.js":382,"./scope_variables.js":387,"d3":252,"skyglass":380}],386:[function(require,module,exports){
+},{"./calculation.js":383,"./scope_variables.js":389,"d3":252,"skyglass":380}],388:[function(require,module,exports){
 var d3 = require('d3');
 var draw = require('./draw.js');
 var skyglass = require('skyglass');
@@ -69318,10 +69459,9 @@ function handleTempConnection(stars) {
 module.exports = {
 
 	handleStarClick: handleStarClick
-	// handleTempConnection: handleTempConnection
 
 }
-},{"./draw.js":385,"d3":252,"skyglass":380}],387:[function(require,module,exports){
+},{"./draw.js":387,"d3":252,"skyglass":380}],389:[function(require,module,exports){
 // scope_variables.js
 
 module.exports = {
@@ -69331,7 +69471,7 @@ module.exports = {
 		margins: {top: 50, right: 50, bottom: 50, left: 50}
 	}
 }
-},{}],388:[function(require,module,exports){
+},{}],390:[function(require,module,exports){
 // setup.js
 // This module will have methods to create the D3 canvas we'll use for our visualizations.
 
@@ -69394,7 +69534,7 @@ function appendText(target, id, x, y){
 
 
 
-},{"./scope_variables":387,"d3":252}],389:[function(require,module,exports){
+},{"./scope_variables":389,"d3":252}],391:[function(require,module,exports){
 // star.js
 // This module will control star creation and rendering
 
@@ -69437,4 +69577,4 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./draw.js":385,"./interaction.js":386,"d3":252}]},{},[381]);
+},{"./draw.js":387,"./interaction.js":388,"d3":252}]},{},[381]);

@@ -9,7 +9,6 @@ module.exports = {
 
 	// Creates the stars
 	render: function(connections, con, stars, scales, update){
-		console.log(connections);
 		var g = d3.select('#line-layer').selectAll('.connection')
 			.data(connections);
 

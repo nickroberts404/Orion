@@ -14,13 +14,12 @@ module.exports = {
 			.attr('transform', function(d){
 				return 'translate('+ scales.x(calc.coordinates(d)[0]) + ', '+ scales.y(calc.coordinates(d)[1]) +')'; 
 			})
-		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
 	},
 	connections: function(enter, exit, stars, scales){
 		var linegen =  d3.svg.line()
-			.x(function(d){ console.log(d); return scales.x(calc.coordinates(stars[d])[0])})
+			.x(function(d){ return scales.x(calc.coordinates(stars[d])[0])})
 			.y(function(d){ return scales.y(calc.coordinates(stars[d])[1])})
 		enter.append('path')
 			.attr('class', 'connection')
@@ -28,7 +27,6 @@ module.exports = {
 			.attr('d', linegen)
 	},
 	line: function(x1, y1, x2, y2, line_class){
-		console.log('Drawin line!');
 		d3.select('#line-layer')
 			.append('line')
 			.attr('class', line_class)

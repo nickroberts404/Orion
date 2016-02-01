@@ -35,6 +35,5 @@ function handleTempConnection(stars) {
 module.exports = {
 
 	handleStarClick: handleStarClick
-	// handleTempConnection: handleTempConnection
 
 }

@@ -7,15 +7,17 @@ var draw = require('./draw.js');
 module.exports = {
 
 	// Creates the stars
-	render: function(connections, scales){
+	render: function(connections, stars, scales){
 		console.log(connections);
 		var g = d3.select('#line-layer').selectAll('.connection')
 			.data(connections);
 
-		// var enter = g.enter();
-		// var exit = g.exit();
+		var enter = g.enter();
+		var exit = g.exit();
 
-		// draw.stars(enter, exit, scales);
+		draw.connections(enter, exit, stars, scales);
+
+		// d3.selectAll('#connections')
 	}
 
 }

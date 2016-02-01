@@ -1,9 +1,10 @@
 // draw.js
 
 var d3 = require('d3');
+var skyglass = require('skyglass');
+
 var calc = require('./calculation.js');
 var scope = require('./scope_variables');
-var skyglass = require('skyglass');
 var star = require('./star.js');
 var connection = require('./connection.js');
 var draw = require('./draw.js');
@@ -22,9 +23,8 @@ function process(err, data){
 }
 
 function render(con, scales){
-	console.log({con: con, scales: scales});
 	star.render(con.stars, scales);
-	connection.render(con.connections, scales);
+	connection.render(con.connections, con.stars, scales);
 	draw.label(con.name);
 }
 

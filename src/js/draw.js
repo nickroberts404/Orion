@@ -1,6 +1,7 @@
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
+var skyglass = require('skyglass');
 var calc = require('./calculation.js');
 
 module.exports = {
@@ -15,6 +16,14 @@ module.exports = {
 		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
+	},
+	connections: function(enter, exit, stars, scales){
+		var linegen =  d3.svg.line()
+			.x(function(d){ console.log(d); return scales.x(calc.coordinates(stars[d])[0])})
+			.y(function(d){ return scales.y(calc.coordinates(stars[d])[1])})
+		enter.append('path')
+			.attr('class', 'connection')
+			.attr('d', linegen)
 	},
 	label: function(label){
 		d3.select('#con-name').text(label);

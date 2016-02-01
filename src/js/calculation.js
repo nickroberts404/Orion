@@ -11,6 +11,7 @@ module.exports = {
 		var dim = scope.dim;
 		var height = dim.height - dim.margins.top - dim.margins.bottom;
 		var width = dim.width - dim.margins.left - dim.margins.right;
+		stars = objToArr(stars);
 		var distances = this.distances(stars);
 		var y_longest = distances.y_bound/height >= distances.x_bound/width;
 		var offset = y_longest 
@@ -18,7 +19,6 @@ module.exports = {
 			: this.offset(width, distances.x_bound, distances.y_bound)
 		var y_range = y_longest ? [height, 0] : [height/2+offset, height/2-offset];
 		var x_range = y_longest ? [width/2+offset, width/2-offset] : [width, 0];
-		console.log(x_range, y_range);
 		scales = {
 			x: create_scale(distances.x_extent, x_range),
 			y: create_scale(distances.y_extent, y_range),
@@ -51,4 +51,12 @@ module.exports = {
 
 function create_scale(domain, range){
 	return d3.scale.linear().domain(domain).range(range); 
+}
+
+function objToArr(obj){
+	var arr = [];
+	for (prop in obj) {
+		arr.push(obj[prop]);
+	}
+	return arr;
 }

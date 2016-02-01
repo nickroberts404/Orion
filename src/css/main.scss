@@ -21,7 +21,7 @@ svg{
 	fill: $color-background;
 }
 
-.connections{
+.connection{
 	@include svg_stroke(black, 2);
 	fill: none;
 	opacity: 0.2;

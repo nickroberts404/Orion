@@ -8,6 +8,7 @@ module.exports = {
 
 	// Creates the stars
 	render: function(stars, scales){
+		stars = objToArr(stars);
 		var g = d3.select('#main-layer').selectAll('.star')
 			.data(stars)
 
@@ -17,4 +18,12 @@ module.exports = {
 		draw.stars(enter, exit, scales);
 	}
 
+}
+
+function objToArr(obj){
+	var arr = [];
+	for (prop in obj) {
+		arr.push(obj[prop]);
+	}
+	return arr;
 }

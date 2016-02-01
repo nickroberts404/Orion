@@ -69089,6 +69089,7 @@ module.exports = {
 		var dim = scope.dim;
 		var height = dim.height - dim.margins.top - dim.margins.bottom;
 		var width = dim.width - dim.margins.left - dim.margins.right;
+		stars = objToArr(stars);
 		var distances = this.distances(stars);
 		var y_longest = distances.y_bound/height >= distances.x_bound/width;
 		var offset = y_longest 
@@ -69096,7 +69097,6 @@ module.exports = {
 			: this.offset(width, distances.x_bound, distances.y_bound)
 		var y_range = y_longest ? [height, 0] : [height/2+offset, height/2-offset];
 		var x_range = y_longest ? [width/2+offset, width/2-offset] : [width, 0];
-		console.log(x_range, y_range);
 		scales = {
 			x: create_scale(distances.x_extent, x_range),
 			y: create_scale(distances.y_extent, y_range),
@@ -69130,6 +69130,14 @@ module.exports = {
 function create_scale(domain, range){
 	return d3.scale.linear().domain(domain).range(range); 
 }
+
+function objToArr(obj){
+	var arr = [];
+	for (prop in obj) {
+		arr.push(obj[prop]);
+	}
+	return arr;
+}
 },{"./scope_variables":386,"d3":252}],383:[function(require,module,exports){
 // connection.js
 // This module will control connection creation and rendering
@@ -69140,15 +69148,17 @@ var draw = require('./draw.js');
 module.exports = {
 
 	// Creates the stars
-	render: function(connections, scales){
+	render: function(connections, stars, scales){
 		console.log(connections);
 		var g = d3.select('#line-layer').selectAll('.connection')
 			.data(connections);
 
-		// var enter = g.enter();
-		// var exit = g.exit();
+		var enter = g.enter();
+		var exit = g.exit();
 
-		// draw.stars(enter, exit, scales);
+		draw.connections(enter, exit, stars, scales);
+
+		// d3.selectAll('#connections')
 	}
 
 }
@@ -69156,9 +69166,10 @@ module.exports = {
 // draw.js
 
 var d3 = require('d3');
+var skyglass = require('skyglass');
+
 var calc = require('./calculation.js');
 var scope = require('./scope_variables');
-var skyglass = require('skyglass');
 var star = require('./star.js');
 var connection = require('./connection.js');
 var draw = require('./draw.js');
@@ -69177,9 +69188,8 @@ function process(err, data){
 }
 
 function render(con, scales){
-	console.log({con: con, scales: scales});
 	star.render(con.stars, scales);
-	connection.render(con.connections, scales);
+	connection.render(con.connections, con.stars, scales);
 	draw.label(con.name);
 }
 
@@ -69192,6 +69202,7 @@ module.exports = {
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
+var skyglass = require('skyglass');
 var calc = require('./calculation.js');
 
 module.exports = {
@@ -69206,6 +69217,14 @@ module.exports = {
 		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
+	},
+	connections: function(enter, exit, stars, scales){
+		var linegen =  d3.svg.line()
+			.x(function(d){ console.log(d); return scales.x(calc.coordinates(stars[d])[0])})
+			.y(function(d){ return scales.y(calc.coordinates(stars[d])[1])})
+		enter.append('path')
+			.attr('class', 'connection')
+			.attr('d', linegen)
 	},
 	label: function(label){
 		d3.select('#con-name').text(label);
@@ -69227,7 +69246,7 @@ function append_star_buffer(star, mag_scale){
 		.attr('cy', 0)
 		.attr('r', function(d){ return mag_scale(d.mag) + 3})
 }
-},{"./calculation.js":382,"d3":252}],386:[function(require,module,exports){
+},{"./calculation.js":382,"d3":252,"skyglass":380}],386:[function(require,module,exports){
 // scope_variables.js
 
 module.exports = {
@@ -69311,6 +69330,7 @@ module.exports = {
 
 	// Creates the stars
 	render: function(stars, scales){
+		stars = objToArr(stars);
 		var g = d3.select('#main-layer').selectAll('.star')
 			.data(stars)
 
@@ -69320,5 +69340,13 @@ module.exports = {
 		draw.stars(enter, exit, scales);
 	}
 
+}
+
+function objToArr(obj){
+	var arr = [];
+	for (prop in obj) {
+		arr.push(obj[prop]);
+	}
+	return arr;
 }
 },{"./draw.js":385,"d3":252}]},{},[381]);

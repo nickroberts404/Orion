@@ -2,7 +2,7 @@
 // This module will control star creation and rendering
 
 var d3 = require('d3');
-var star = require('./star.js');
+var draw = require('./draw.js');
 
 module.exports = {
 
@@ -14,8 +14,15 @@ module.exports = {
 		var enter = g.enter();
 		var exit = g.exit();
 
-		draw.star_buffers(enter, exit, scales);
 		draw.stars(enter, exit, scales);
 	}
 
+}
+
+function objToArr(obj){
+	var arr = [];
+	for(p in obj){
+		arr.push(obj[p]);
+	}
+	return arr;
 }

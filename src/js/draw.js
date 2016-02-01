@@ -12,6 +12,7 @@ module.exports = {
 			.attr('transform', function(d){
 				return 'translate('+ scales.x(calc.coordinates(d)[0]) + ', '+ scales.y(calc.coordinates(d)[1]) +')'; 
 			})
+		console.log(star);
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
 	}

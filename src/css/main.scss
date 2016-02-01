@@ -10,12 +10,15 @@ svg{
 	@include absolute_center();
 }
 
-.stars{
+.star-main{
 	fill: $color-primary;
 	opacity: 0.6;
 	&:hover{
 		opacity: 1;
 	}
+}
+.star-buffer{
+	fill: $color-background;
 }
 
 .connections{
@@ -30,9 +33,6 @@ svg{
 .connection-temp{
 	@extend .connections;
 	pointer-events: none;
-}
-.stars-backing{
-	fill: $color-background;
 }
 #name{
 	@include large_text();

@@ -34,6 +34,13 @@ svg{
 	@extend .connection;
 	pointer-events: none;
 }
+
+.nav-btns{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
 #con-name{
 	@include large_text();
 }

@@ -28,6 +28,11 @@ svg {
 .connection-temp {
   pointer-events: none; }
 
+.nav-btns {
+  position: absolute;
+  top: 10px;
+  left: 10px; }
+
 #con-name {
   font-size: 40px;
   font-weight: 900;

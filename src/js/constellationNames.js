@@ -97,6 +97,7 @@ function initial() {
 	var hash = window.location.hash.slice(1);
 	var hashIndex = indexOfHash(hash);
 	if(hashIndex != null){
+		index = hashIndex;
 		return constellations[hashIndex].abbr;
 	}
 	return getAbbr()

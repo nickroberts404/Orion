@@ -94,19 +94,39 @@ var constellations = [
 var index = 0;
 
 function initial() {
+	var hash = window.location.hash.slice(1);
+	var hashIndex = indexOfHash(hash);
+	if(hashIndex != null){
+		return constellations[hashIndex].abbr;
+	}
+	return getAbbr()
+}
+function getAbbr(){
+	// This creates cyclical navigation
+	if (index > constellations.length-1 ) index = 0;
+	else if (index < 0 ) index = constellations.length-1;
+	// Change URL hash to be that of current constellation
+	window.location.hash = '#'+constellations[index].abbr;
 	return constellations[index].abbr;
 }
-
 function next() {
 	index++;
-	return constellations[index].abbr;
+	return getAbbr();
 }
 
 function prev() {
 	index--;
-	return constellations[index].abbr;
+	return getAbbr();
 }
-
+function indexOfHash(hash){
+	for(var i = 0; i < constellations.length; i++){
+		if (constellations[i].abbr === hash) {
+			console.log('Found a match');
+			return i;
+		}
+	}
+	return null;
+}
 module.exports = {
 	initial: initial,
 	next: next,

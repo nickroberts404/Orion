@@ -11,7 +11,7 @@ module.exports = {
 	render: function(stars, scales, con, update){
 		stars = objToArr(stars);
 		var g = d3.select('#main-layer').selectAll('.star')
-			.data(stars)
+			.data(stars, function(d){ return d.id })
 
 		var enter = g.enter();
 		var exit = g.exit();

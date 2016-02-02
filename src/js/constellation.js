@@ -15,13 +15,23 @@ var initial_constellation = constellationNames.initial();
 var constellation_data;
 var current_constellation;
 
-buttons.handleButtons(constellationNames.next, constellationNames.prev, function(name){
-	current_constellation = constellation_data[name];
-	render(current_constellation);
-});
+buttons.handleButtons(constellationNames.next, constellationNames.prev, update);
 
 function init(){
 	skyglass.getConstellations(process);
+}
+function update(con){
+	if (con) {
+		current_constellation = constellation_data[con];
+	}
+	render(current_constellation);
+}
+function dataUpdate(){
+	skyglass.getConstellations(function(err, data){
+		constellation_data = data;
+		current_constellation = constellation_data[current_constellation.abbr];
+		render(current_constellation);
+	});
 }
 
 function process(err, data){
@@ -33,8 +43,8 @@ function process(err, data){
 function render(con){
 	console.log(con);
 	var scales = calc.scales(current_constellation.stars);
-	star.render(con.stars, scales, con, init);
-	connection.render(con.connections, con, con.stars, scales, init);
+	star.render(con.stars, scales, con, dataUpdate);
+	connection.render(con.connections, con, con.stars, scales, dataUpdate);
 	draw.label(con.name);
 }
 

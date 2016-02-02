@@ -14,6 +14,7 @@ module.exports = {
 			.attr('transform', function(d){
 				return 'translate('+ scales.x(calc.coordinates(d)[0]) + ', '+ scales.y(calc.coordinates(d)[1]) +')'; 
 			})
+		exit.remove();
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
 	},
@@ -25,6 +26,7 @@ module.exports = {
 			.attr('class', 'connection')
 			.attr('id', function(d){ return 'connection'+d[0]+'-'+d[1] })
 			.attr('d', linegen)
+		exit.remove();
 	},
 	line: function(x1, y1, x2, y2, line_class){
 		d3.select('#line-layer')

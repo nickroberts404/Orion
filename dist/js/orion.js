@@ -69170,7 +69170,7 @@ module.exports = {
 	// Creates the stars
 	render: function(connections, con, stars, scales, update){
 		var g = d3.select('#line-layer').selectAll('.connection')
-			.data(connections);
+			.data(connections, function(d){ return d[0]+'-'+d[1];});
 
 		var enter = g.enter();
 		var exit = g.exit();
@@ -69204,13 +69204,23 @@ var initial_constellation = constellationNames.initial();
 var constellation_data;
 var current_constellation;
 
-buttons.handleButtons(constellationNames.next, constellationNames.prev, function(name){
-	current_constellation = constellation_data[name];
-	render(current_constellation);
-});
+buttons.handleButtons(constellationNames.next, constellationNames.prev, update);
 
 function init(){
 	skyglass.getConstellations(process);
+}
+function update(con){
+	if (con) {
+		current_constellation = constellation_data[con];
+	}
+	render(current_constellation);
+}
+function dataUpdate(){
+	skyglass.getConstellations(function(err, data){
+		constellation_data = data;
+		current_constellation = constellation_data[current_constellation.abbr];
+		render(current_constellation);
+	});
 }
 
 function process(err, data){
@@ -69222,8 +69232,8 @@ function process(err, data){
 function render(con){
 	console.log(con);
 	var scales = calc.scales(current_constellation.stars);
-	star.render(con.stars, scales, con, init);
-	connection.render(con.connections, con, con.stars, scales, init);
+	star.render(con.stars, scales, con, dataUpdate);
+	connection.render(con.connections, con, con.stars, scales, dataUpdate);
 	draw.label(con.name);
 }
 
@@ -69329,19 +69339,39 @@ var constellations = [
 var index = 0;
 
 function initial() {
+	var hash = window.location.hash.slice(1);
+	var hashIndex = indexOfHash(hash);
+	if(hashIndex != null){
+		return constellations[hashIndex].abbr;
+	}
+	return getAbbr()
+}
+function getAbbr(){
+	// This creates cyclical navigation
+	if (index > constellations.length-1 ) index = 0;
+	else if (index < 0 ) index = constellations.length-1;
+	// Change URL hash to be that of current constellation
+	window.location.hash = '#'+constellations[index].abbr;
 	return constellations[index].abbr;
 }
-
 function next() {
 	index++;
-	return constellations[index].abbr;
+	return getAbbr();
 }
 
 function prev() {
 	index--;
-	return constellations[index].abbr;
+	return getAbbr();
 }
-
+function indexOfHash(hash){
+	for(var i = 0; i < constellations.length; i++){
+		if (constellations[i].abbr === hash) {
+			console.log('Found a match');
+			return i;
+		}
+	}
+	return null;
+}
 module.exports = {
 	initial: initial,
 	next: next,
@@ -69364,6 +69394,7 @@ module.exports = {
 			.attr('transform', function(d){
 				return 'translate('+ scales.x(calc.coordinates(d)[0]) + ', '+ scales.y(calc.coordinates(d)[1]) +')'; 
 			})
+		exit.remove();
 		append_star_buffer(star, scales.mag);
 		append_main_star(star, scales.mag);
 	},
@@ -69375,6 +69406,7 @@ module.exports = {
 			.attr('class', 'connection')
 			.attr('id', function(d){ return 'connection'+d[0]+'-'+d[1] })
 			.attr('d', linegen)
+		exit.remove();
 	},
 	line: function(x1, y1, x2, y2, line_class){
 		d3.select('#line-layer')
@@ -69548,7 +69580,7 @@ module.exports = {
 	render: function(stars, scales, con, update){
 		stars = objToArr(stars);
 		var g = d3.select('#main-layer').selectAll('.star')
-			.data(stars)
+			.data(stars, function(d){ return d.id })
 
 		var enter = g.enter();
 		var exit = g.exit();

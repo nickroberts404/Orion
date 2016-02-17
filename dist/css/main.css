@@ -16,10 +16,13 @@
       width: 100%; }
       .sidebar ul li:hover {
         background: #74bdff; }
+      .sidebar ul li.active {
+        background: #74bdff; }
   .sidebar div {
     text-align: center; }
   .sidebar .logo {
-    width: 30%; }
+    width: 25%;
+    margin-top: 10px; }
 
 svg {
   background-color: white;

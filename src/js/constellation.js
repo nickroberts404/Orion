@@ -40,7 +40,6 @@ function render(con){
 	var scales = calc.scales(current_constellation.stars);
 	star.render(con.stars, scales, con);
 	connection.render(con.connections, con, con.stars, scales);
-	draw.label(con.name);
 }
 
 function parseConnections(connections){

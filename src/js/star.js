@@ -17,14 +17,6 @@ module.exports = {
 
 		draw.stars(enter, exit, scales);
 
-		d3.selectAll('.star')
-			.on('mouseover', function(star){
-				draw.name(star.proper || star.bf);
-			})
-			.on('mouseout', function(){
-				draw.name('');
-			})
-
 	}
 
 }

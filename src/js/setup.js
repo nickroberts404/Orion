@@ -10,7 +10,7 @@ module.exports = {
 	init_space: function(){
 
 		var dim = scope.dim;
-		var svg = d3.select('body').append('svg')
+		var svg = d3.select('section.main').append('svg')
 			.attr('id', 'space-layer')
 			.attr('height', dim.height)
 			.attr('width', dim.width)

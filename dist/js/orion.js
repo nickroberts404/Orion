@@ -12883,7 +12883,6 @@ var constellation = require('./constellation.js');
 var scope = require('./scope_variables');
 
 setup.init_space();
-setup.init_big_text();
 
 constellation.process();
 
@@ -13034,7 +13033,6 @@ function render(con){
 	var scales = calc.scales(current_constellation.stars);
 	star.render(con.stars, scales, con);
 	connection.render(con.connections, con, con.stars, scales);
-	draw.label(con.name);
 }
 
 function parseConnections(connections){
@@ -13294,7 +13292,7 @@ module.exports = {
 	init_space: function(){
 
 		var dim = scope.dim;
-		var svg = d3.select('body').append('svg')
+		var svg = d3.select('section.main').append('svg')
 			.attr('id', 'space-layer')
 			.attr('height', dim.height)
 			.attr('width', dim.width)
@@ -13398,14 +13396,6 @@ module.exports = {
 		var exit = g.exit();
 
 		draw.stars(enter, exit, scales);
-
-		d3.selectAll('.star')
-			.on('mouseover', function(star){
-				draw.name(star.proper || star.bf);
-			})
-			.on('mouseout', function(){
-				draw.name('');
-			})
 
 	}
 

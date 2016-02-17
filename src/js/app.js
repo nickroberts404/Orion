@@ -6,7 +6,6 @@ var constellation = require('./constellation.js');
 var scope = require('./scope_variables');
 
 setup.init_space();
-setup.init_big_text();
 
 constellation.process();
 

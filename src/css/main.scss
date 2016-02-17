@@ -8,9 +8,11 @@ svg{
 	// border: 1px solid #bbb;
 	// border-radius: 50%;
 	background-color: $color-background;
-	@include absolute_center();
+	// @include absolute_center();
 }
-
+body{
+	display: flex;
+}
 .star-main{
 	fill: $color-primary;
 	opacity: 0.6;
@@ -42,9 +44,10 @@ svg{
 	right: 10px;
 }
 
-#con-name{
-	@include large_text();
-}
-#star-name{
-	@include large_text();
+section.main {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }

@@ -10,6 +10,8 @@ var draw = require('./draw.js');
 var constellationNames = require('./constellationNames.js');
 var buttons  = require('./buttons');
 var sidebar = require('./sidebar');
+var content = require('./content');
+
 
 var initial_constellation = constellationNames.initial();
 var constellation_data = require('../../constellations.json')
@@ -23,6 +25,7 @@ for(con in constellation_data){
 buttons.handleButtons(constellationNames.next, constellationNames.prev, update);
 
 function process(){
+	content.init();
 	current_constellation = constellation_data[initial_constellation];
 	render(current_constellation);
 	sidebar.update(current_constellation);
@@ -37,6 +40,7 @@ function update(con){
 
 function render(con){
 	sidebar.update(con);
+	content.update(con);
 	var scales = calc.scales(current_constellation.stars);
 	star.render(con.stars, scales, con);
 	connection.render(con.connections, con, con.stars, scales);

@@ -12887,7 +12887,7 @@ setup.init_space();
 constellation.process();
 
 
-},{"./constellation.js":7,"./scope_variables":10,"./setup.js":11}],4:[function(require,module,exports){
+},{"./constellation.js":7,"./scope_variables":11,"./setup.js":12}],4:[function(require,module,exports){
 // buttons.js
 
 var nextBtn = document.getElementById('next-btn');
@@ -12969,7 +12969,7 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./scope_variables":10,"d3":2}],6:[function(require,module,exports){
+},{"./scope_variables":11,"d3":2}],6:[function(require,module,exports){
 // connection.js
 // This module will control connection creation and rendering
 
@@ -12990,7 +12990,7 @@ module.exports = {
 	}
 
 }
-},{"./draw.js":9,"d3":2}],7:[function(require,module,exports){
+},{"./draw.js":10,"d3":2}],7:[function(require,module,exports){
 // draw.js
 
 var d3 = require('d3');
@@ -13003,6 +13003,8 @@ var draw = require('./draw.js');
 var constellationNames = require('./constellationNames.js');
 var buttons  = require('./buttons');
 var sidebar = require('./sidebar');
+var content = require('./content');
+
 
 var initial_constellation = constellationNames.initial();
 var constellation_data = require('../../constellations.json')
@@ -13016,6 +13018,7 @@ for(con in constellation_data){
 buttons.handleButtons(constellationNames.next, constellationNames.prev, update);
 
 function process(){
+	content.init();
 	current_constellation = constellation_data[initial_constellation];
 	render(current_constellation);
 	sidebar.update(current_constellation);
@@ -13030,6 +13033,7 @@ function update(con){
 
 function render(con){
 	sidebar.update(con);
+	content.update(con);
 	var scales = calc.scales(current_constellation.stars);
 	star.render(con.stars, scales, con);
 	connection.render(con.connections, con, con.stars, scales);
@@ -13046,7 +13050,7 @@ module.exports = {
 	process: process,
 	render: render
 }
-},{"../../constellations.json":1,"./buttons":4,"./calculation.js":5,"./connection.js":6,"./constellationNames.js":8,"./draw.js":9,"./scope_variables":10,"./sidebar":12,"./star.js":13,"d3":2}],8:[function(require,module,exports){
+},{"../../constellations.json":1,"./buttons":4,"./calculation.js":5,"./connection.js":6,"./constellationNames.js":8,"./content":9,"./draw.js":10,"./scope_variables":11,"./sidebar":13,"./star.js":14,"d3":2}],8:[function(require,module,exports){
 // constellationNames.js
 
 var allConstellations = [
@@ -13195,6 +13199,28 @@ module.exports = {
 	prev: prev
 }
 },{}],9:[function(require,module,exports){
+// content.js
+var d3 = require('d3');
+
+function init () {
+	var section = d3.select('section.main');
+	var header = section.append('header').attr('class', 'title')
+	header.append('h2').attr('class', 'name')
+	header.append('p').attr('class', 'meaning')
+	section.append('p').attr('class', 'content')
+}
+
+function update (con) {
+	d3.select('h2.name').text(con.name)
+	d3.select('p.meaning').text(con.meaning)
+	d3.select('p.content').text('This is the content. ')
+}
+
+module.exports = {
+	init: init,
+	update: update
+}
+},{"d3":2}],10:[function(require,module,exports){
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
@@ -13269,7 +13295,7 @@ function line(x1, y1, x2, y2, line_class, stars){
 		.attr('y2', y2)
 		.on('click', delete_connection)
 }
-},{"./calculation.js":5,"./scope_variables.js":10,"d3":2}],10:[function(require,module,exports){
+},{"./calculation.js":5,"./scope_variables.js":11,"d3":2}],11:[function(require,module,exports){
 // scope_variables.js
 
 module.exports = {
@@ -13279,7 +13305,7 @@ module.exports = {
 		margins: {top: 50, right: 50, bottom: 50, left: 50}
 	}
 }
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // setup.js
 // This module will have methods to create the D3 canvas we'll use for our visualizations.
 
@@ -13342,7 +13368,7 @@ function appendText(target, id, x, y){
 
 
 
-},{"./scope_variables":10,"d3":2}],12:[function(require,module,exports){
+},{"./scope_variables":11,"d3":2}],13:[function(require,module,exports){
 // sidebar.js
 var d3 = require('d3');
 
@@ -13377,7 +13403,7 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"d3":2}],13:[function(require,module,exports){
+},{"d3":2}],14:[function(require,module,exports){
 // star.js
 // This module will control star creation and rendering
 
@@ -13408,4 +13434,4 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./draw.js":9,"d3":2}]},{},[3]);
+},{"./draw.js":10,"d3":2}]},{},[3]);

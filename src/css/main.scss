@@ -47,7 +47,9 @@ body{
 section.main {
 	display: flex;
 	flex-grow: 1;
+	height: 100vh;
 	flex-direction: column;
-	justify-content: center;
+	// justify-content: center;
 	align-items: center;
+	overflow-y: scroll;
 }

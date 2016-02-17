@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 !function() {
   var d3 = {
-    version: "3.5.13"
+    version: "3.5.14"
   };
   var d3_arraySlice = [].slice, d3_array = function(list) {
     return d3_arraySlice.call(list);
@@ -806,7 +806,7 @@
   function d3_selection_creator(name) {
     function create() {
       var document = this.ownerDocument, namespace = this.namespaceURI;
-      return namespace ? document.createElementNS(namespace, name) : document.createElement(name);
+      return namespace && namespace !== document.documentElement.namespaceURI ? document.createElementNS(namespace, name) : document.createElement(name);
     }
     function createNS() {
       return this.ownerDocument.createElementNS(name.space, name.local);

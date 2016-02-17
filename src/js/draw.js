@@ -1,7 +1,6 @@
 // draw.js
 // This module will have methods to draw our svg elements.
 var d3 = require('d3');
-var skyglass = require('skyglass');
 var scope = require('./scope_variables.js')
 var calc = require('./calculation.js');
 

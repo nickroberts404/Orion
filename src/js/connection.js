@@ -3,12 +3,11 @@
 
 var d3 = require('d3');
 var draw = require('./draw.js');
-var skyglass = require('skyglass');
 
 module.exports = {
 
 	// Creates the stars
-	render: function(connections, con, stars, scales, update){
+	render: function(connections, con, stars, scales){
 		var g = d3.select('#line-layer').selectAll('.connection')
 			.data(connections, function(d){ return d[0]+'-'+d[1];});
 

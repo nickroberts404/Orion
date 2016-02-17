@@ -7,7 +7,7 @@ var draw = require('./draw.js');
 module.exports = {
 
 	// Creates the stars
-	render: function(stars, scales, con, update){
+	render: function(stars, scales, con){
 		stars = objToArr(stars);
 		var g = d3.select('#main-layer').selectAll('.star')
 			.data(stars, function(d){ return d.id })

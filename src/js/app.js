@@ -8,5 +8,5 @@ var scope = require('./scope_variables');
 setup.init_space();
 setup.init_big_text();
 
-constellation.init();
+constellation.process();
 

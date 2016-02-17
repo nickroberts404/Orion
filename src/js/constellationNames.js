@@ -1,6 +1,6 @@
 // constellationNames.js
 
-var constellations = [
+var allConstellations = [
 {name:"Andromeda",meaning:"Daughter of Cassiopeia",abbr:"And"},
 {name:"Antlia",meaning:"The Air Pump",abbr:"Ant"},
 {name:"Apus",meaning:"Bird of Paradise",abbr:"Aps"},
@@ -90,6 +90,18 @@ var constellations = [
 {name:"Volans",meaning:"The Flying Fish",abbr:"Vol"},
 {name:"Vulpecula",meaning:"The Fox",abbr:"Vul"}
 ];
+var constellations = [
+{name:"Andromeda",meaning:"Daughter of Cassiopeia",abbr:"And"},
+{name:"Antlia",meaning:"The Air Pump",abbr:"Ant"},
+{name:"Apus",meaning:"Bird of Paradise",abbr:"Aps"},
+{name:"Aquarius",meaning:"The Water-Bearer",abbr:"Aqr"},
+{name:"Aquila",meaning:"The Eagle",abbr:"Aql"},
+{name:"Ara",meaning:"The Altar",abbr:"Ara"},
+{name:"Aries",meaning:"The Ram",abbr:"Ari"},
+{name:"Auriga",meaning:"The Charioteer",abbr:"Aur"},
+{name:"Boötes",meaning:"The Herdsman",abbr:"Boo"},
+{name:"Caelum",meaning:"The Chisel",abbr:"Cae"}
+]
 
 var index = 0;
 

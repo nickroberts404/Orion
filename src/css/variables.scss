@@ -1,10 +1,15 @@
 // variables.scss
-
-$color-primary: steelblue;
+$blue: #A7D5FF;
+$indigo: #A7BAFF;
+$purple: #CEA7FF;
+$yellow: #FFECA7;
+$color-primary: $purple;
 $color-primary-dark: darken($color-primary, 10%); 
 $color-primary-darker: darken($color-primary, 20%); 
 $color-primary-darkest: darken($color-primary, 40%); 
 $color-primary-light: lighten($color-primary, 10%); 
 $color-primary-lighter: lighten($color-primary, 20%); 
 $color-primary-lightest: lighten($color-primary, 40%); 
+$color-secondary: $blue; 
+$color-secondary-dark: darken($color-secondary, 10%);
 $color-background: white;

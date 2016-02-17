@@ -2,9 +2,10 @@
 
 @import 'variables.scss';
 @import 'utilities.scss';
+@import 'sidebar.scss';
 
 svg{	
-	border: 1px solid #bbb;
+	// border: 1px solid #bbb;
 	// border-radius: 50%;
 	background-color: $color-background;
 	@include absolute_center();
@@ -38,7 +39,7 @@ svg{
 .nav-btns{
 	position: absolute;
 	top: 10px;
-	left: 10px;
+	right: 10px;
 }
 
 #con-name{

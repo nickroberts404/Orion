@@ -29,8 +29,6 @@
   "dependencies": {
     "async-queue": "^0.1.0",
     "d3": "^3.5.13",
-    "jquery": "^2.2.0",
-    "request": "^2.67.0",
-    "skyglass": "^1.0.5"
+    "jquery": "^2.2.0"
   }
 }

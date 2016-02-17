@@ -69075,7 +69075,7 @@ setup.init_big_text();
 constellation.init();
 
 
-},{"./constellation.js":385,"./scope_variables":389,"./setup.js":390}],382:[function(require,module,exports){
+},{"./constellation.js":385,"./scope_variables":388,"./setup.js":389}],382:[function(require,module,exports){
 // buttons.js
 
 var nextBtn = document.getElementById('next-btn');
@@ -69157,7 +69157,7 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./scope_variables":389,"d3":252}],384:[function(require,module,exports){
+},{"./scope_variables":388,"d3":252}],384:[function(require,module,exports){
 // connection.js
 // This module will control connection creation and rendering
 
@@ -69176,13 +69176,6 @@ module.exports = {
 		var exit = g.exit();
 
 		draw.connections(enter, exit, stars, scales);
-
-		d3.selectAll('.connection').on('click', function(d){
-			d3.select('#connection'+d[0]+'-'+d[1]).remove();
-			skyglass.removeConnection(con.abbr, d, function(){
-				update();
-			})
-		})
 	}
 
 }
@@ -69242,7 +69235,7 @@ module.exports = {
 	process: process,
 	render: render
 }
-},{"./buttons":382,"./calculation.js":383,"./connection.js":384,"./constellationNames.js":386,"./draw.js":387,"./scope_variables":389,"./star.js":391,"d3":252,"skyglass":380}],386:[function(require,module,exports){
+},{"./buttons":382,"./calculation.js":383,"./connection.js":384,"./constellationNames.js":386,"./draw.js":387,"./scope_variables":388,"./star.js":390,"d3":252,"skyglass":380}],386:[function(require,module,exports){
 // constellationNames.js
 
 var constellations = [
@@ -69454,47 +69447,7 @@ function line(x1, y1, x2, y2, line_class, stars){
 		.attr('y2', y2)
 		.on('click', delete_connection)
 }
-},{"./calculation.js":383,"./scope_variables.js":389,"d3":252,"skyglass":380}],388:[function(require,module,exports){
-var d3 = require('d3');
-var draw = require('./draw.js');
-var skyglass = require('skyglass');
-
-var activeStar;
-var starDOM;
-var targetX; 
-var targetY; 
-
-function handleStarClick(star, con, update) {
-	var theStar = d3.select('#star'+star.id)[0][0];
-	if (!activeStar) {
-		activeStar = star
-		starDOM = theStar;
-		targetX = starDOM.transform.baseVal[0].matrix.e;
-		targetY = starDOM.transform.baseVal[0].matrix.f;
-		d3.select('#space-layer').on('mousemove', handleTempConnection)
-	} else {
-		d3.select('.connection-temp').remove();
-		d3.select('#space-layer').on('mousemove', null);
-		skyglass.addConnection(con.abbr, [activeStar.id, star.id], function(){ 
-			activeStar = null;
-			starDOM = null;
-			update();
-		});
-	}
-}
-
-function handleTempConnection(stars) {
-	var e = d3.event;
-	d3.select('.connection-temp').remove();
-	draw.line(targetX, targetY, e.offsetX, e.offsetY, 'connection-temp');
-}
-
-module.exports = {
-
-	handleStarClick: handleStarClick
-
-}
-},{"./draw.js":387,"d3":252,"skyglass":380}],389:[function(require,module,exports){
+},{"./calculation.js":383,"./scope_variables.js":388,"d3":252,"skyglass":380}],388:[function(require,module,exports){
 // scope_variables.js
 
 module.exports = {
@@ -69504,7 +69457,7 @@ module.exports = {
 		margins: {top: 50, right: 50, bottom: 50, left: 50}
 	}
 }
-},{}],390:[function(require,module,exports){
+},{}],389:[function(require,module,exports){
 // setup.js
 // This module will have methods to create the D3 canvas we'll use for our visualizations.
 
@@ -69567,13 +69520,12 @@ function appendText(target, id, x, y){
 
 
 
-},{"./scope_variables":389,"d3":252}],391:[function(require,module,exports){
+},{"./scope_variables":388,"d3":252}],390:[function(require,module,exports){
 // star.js
 // This module will control star creation and rendering
 
 var d3 = require('d3');
 var draw = require('./draw.js');
-var interaction = require('./interaction.js');
 
 module.exports = {
 
@@ -69589,9 +69541,6 @@ module.exports = {
 		draw.stars(enter, exit, scales);
 
 		d3.selectAll('.star')
-			.on('click', function(star){
-				interaction.handleStarClick(star, con, update);
-			})
 			.on('mouseover', function(star){
 				draw.name(star.proper || star.bf);
 			})
@@ -69610,4 +69559,4 @@ function objToArr(obj){
 	}
 	return arr;
 }
-},{"./draw.js":387,"./interaction.js":388,"d3":252}]},{},[381]);
+},{"./draw.js":387,"d3":252}]},{},[381]);

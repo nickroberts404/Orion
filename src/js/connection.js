@@ -16,13 +16,6 @@ module.exports = {
 		var exit = g.exit();
 
 		draw.connections(enter, exit, stars, scales);
-
-		d3.selectAll('.connection').on('click', function(d){
-			d3.select('#connection'+d[0]+'-'+d[1]).remove();
-			skyglass.removeConnection(con.abbr, d, function(){
-				update();
-			})
-		})
 	}
 
 }
